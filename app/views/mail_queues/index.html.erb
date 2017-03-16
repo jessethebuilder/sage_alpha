@@ -1,0 +1,41 @@
+<%= side_nav ["New Mail Queue", new_mail_queue_path] %>
+
+<%= page_heading "Mail Queues" %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>
+              Created At
+            </th>
+            <th>Complete</th>
+            <th>Count</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @mail_queues.each do |mq| %>
+            <tr>
+              <td>
+                <%= link_to mq.name, mq %>
+              </td>
+              <td>
+                <%= mq.emails_complete %>
+              </td>
+              <td>
+                <%= mq.sent_emails_count %>
+              </td>
+              <td>
+                <%= link_to 'Delete', mail_queue_path(mq),
+                    method: :delete, class: 'btn btn-danger btn-sm',
+                    data: {confirm: "Are you sure? This is permanent!"}
+                %>
+            </tr>
+          <% end %>
+      </table>
+    </div>
+  </div>
+</div>

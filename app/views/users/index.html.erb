@@ -1,0 +1,66 @@
+<div class="container">
+  <%= form_for @user do |f| %>
+  <div class="row">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <h3>Add User</h3>
+      <div class="form-inline">
+        <%= f.label :email, class: 'control-label' %>
+        <%= f.email_field :email, class: 'form-control' %>
+
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<%= page_heading "Users" %>
+
+<div class="users">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Admin</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @users.each do |u| %>
+              <tr>
+                <td><%= mail_to u.email, u.email %></td>
+                <td><%= u.admin %></td>
+
+                <% unless u == current_user # Admins cannot delete or demote themselves %>
+                  <td>
+                    <% if u.admin? %>
+                      <%= link_to "Demote", demote_user_path(u), class: 'btn btn-warning btn-sm' %>
+                    <% else %>
+                      <%= link_to "Promote", promote_user_path(u), class: 'btn btn-success btn-sm' %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to "Delete", user_path(u), method: :delete,
+                                class: 'btn btn-danger btn-sm',
+                                data: {confirm: "Are you sure? This is permanent!"} %>
+                  </td>
+                <% else %>
+                  <td></td>
+                  <td></td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

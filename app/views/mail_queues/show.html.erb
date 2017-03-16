@@ -1,0 +1,38 @@
+<% unless @mail_queue.emails_complete %>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group pull-right">
+          <%= link_to "Send Emails", send_emails_mail_queue_path(@mail_queue),
+                       id: 'send_emails', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= page_heading "Mail Queue <small>#{@mail_queue.name}</small>".html_safe %>
+
+<div class="container mail_queue">
+  <% @mail_queue.mail_images.each do |img| %>
+    <div class="row mail_image">
+      <div class="col-xs-3">
+        <%= img.text %>
+      </div>
+
+      <div class="col-xs-3">
+        <% img.client_keyword_matches.each do |ckm| %>
+          <% if Client.where(_id: ckm['client_id']).limit(1).count > 0 %>
+            <%= ckm['keyword'] %>
+            ->
+            <%= Client.find(ckm['client_id']).email %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="col-xs-3">
+        <%= image_tag img.image %>
+      </div>
+    </div>
+  <% end %>
+</div>

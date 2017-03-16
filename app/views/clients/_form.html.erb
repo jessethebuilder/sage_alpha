@@ -1,0 +1,39 @@
+<div class="container client_form">
+  <%= form_for(client) do |f| %>
+    <%= error_explanation client %>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group req">
+          <%= f.label :name %>
+          <%= f.text_field :name %>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group req">
+          <%= f.label :email %>
+          <%= f.email_field :email %>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group req">
+          <%= f.label :keywords %>
+          <small> seperate with commas</small>
+          <%= f.text_area :keywords, value: client.display_keywords %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <%= f.submit class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

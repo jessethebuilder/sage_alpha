@@ -1,0 +1,29 @@
+<div class="container">
+  <%= error_explanation(mail_queue) %>
+
+  <div id="feedback"></div>
+
+  <%= form_for(mail_queue,
+               html: {multipart: true, class: 'mail_queue_form'}, remote: true) do |f| %>
+
+    <div class="form-group">
+      <%= f.label :images %>
+      <%= f.file_field :images, multiple: true %>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <%= f.submit class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var builder = new MailQueueBuilder();
+    builder.init();
+  });
+</script>

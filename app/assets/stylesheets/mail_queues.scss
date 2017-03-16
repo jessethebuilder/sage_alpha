@@ -1,0 +1,15 @@
+.mail_queue{
+
+  .mail_image{
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    img{
+      width: 40%;
+    }
+  }
+
+  .mail_image:nth-child(even){
+    background-color: #ccc;
+  }
+}
