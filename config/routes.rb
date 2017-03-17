@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments
   resources :mail_queues do
     member do
       get 'send_emails'
