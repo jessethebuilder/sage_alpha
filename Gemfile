@@ -49,7 +49,7 @@ gem 'rtesseract'
 # gem 'tesseract-ocr'
 
 group :test, :development do
-  gem 'faker'
+  # gem 'faker'
   gem 'rspec-rails'
   gem 'database_cleaner', '~> 1.0.0rc'
   gem 'timecop'
