@@ -90,7 +90,8 @@ function MailQueueBuilder(){
       t.uploadFile(file.data).then(function(){
         if(t.upload_count === t.files.length){
           t.feedback.html("All Uploads Complete!");
-          window.location = "/mail_queues/" + t.mail_queue_id;
+          // window.location = "/mail_queues/" + t.mail_queue_id;
+          window.location = "/mail_queues";
         } else {
           t.feedback.html("Uploaded " + t.upload_count + " Images.");
         }

@@ -25,6 +25,7 @@ gem 'data_uri'
 # gem 'fog'
 gem 'faker'
 
+gem 'whenever', :require => false
 # gem 'sucker_punch'
 # gem 'resque'
 # gem 'resque-scheduler'

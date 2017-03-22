@@ -8,6 +8,8 @@ class MailQueue
   field :sent_emails_count, type: Integer, default: 0
   field :emails_complete, type: Boolean, default: false
 
+  field :client_ids_that_have_been_emailed, type: Array, default: []
+
   scope :unsent, -> { where(emails_complete: false) }
 
   def send_emails
@@ -23,8 +25,9 @@ class MailQueue
       self.mail_images.each do |img|
         img.client_keyword_matches.each do |match|
 
-          if c.id == match[:client_id]
-            # If this client matches the client_id
+          if c.id == match[:client_id] && !self.client_ids_that_have_been_emailed.include?(c.id)
+            # If this client matches the client_id, and if an email HAS NOT been sent
+            # to this client based on this MailQueue
             h = {}
             image_path = img.image
             h[:image] = image_path
@@ -38,7 +41,11 @@ class MailQueue
       # Client sends the email models/client
       unless mail_content_array.blank?
         c.send_email(mail_content_array)
-        self.update(sent_emails_count: self.sent_emails_count + 1)
+        # self.update(sent_emails_count: self.sent_emails_count + 1)
+        self.sent_emails_count = self.sent_emails_count + 1
+        # Record if this client has been emailed
+        self.client_ids_that_have_been_emailed << c.id
+        self.save
       end
     end
 

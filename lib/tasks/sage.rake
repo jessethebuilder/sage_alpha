@@ -9,10 +9,16 @@ namespace :sage do
   #   puts i.read_as_text
   # end
 
-  task :read => :environment do
-    ocr = MailReader.new
-    ocr.read(Rail.root.join('temp/2.png')).strip
-  end
+  # task :read => :environment do
+  #   ocr = MailReader.new
+  #   ocr.read(Rail.root.join('temp/2.png')).strip
+  # end
+  #
+  # task :r => :read
 
-  task :r => :read
+  task :send_emails => :environment do
+    MailQueue.unsent.each do |mq|
+      mq.send_emails
+    end
+  end
 end

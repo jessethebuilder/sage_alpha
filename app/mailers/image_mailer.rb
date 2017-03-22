@@ -1,7 +1,9 @@
 require 'open-uri'
 
 class ImageMailer < ApplicationMailer
-  default from: "Sage Workspace <#{ENV['MAILER_EMAIL']}>"
+  default from: "Sage Workspace <#{ENV['MAILER_EMAIL']}>",
+          return_path: ENV['MAILER_EMAIL'],
+          sender: ENV['MAILER_EMAIL']
 
   def notify_client_of_keyword_matches(client, email_content_array)
     delivery_options = {:password => ENV['MAILER_PASSWORD']}

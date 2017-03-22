@@ -35,16 +35,19 @@ class MailQueuesController < ApplicationController
 
     respond_to do |format|
       if @mail_queue.save
-        # SendImageMailsJob.perform_later(MailQueue.unsent)
+        # format.html { redirect_to @mail_queue, notice: 'Mail queue was successfully created.' }
+        format.html { redirect_to mail_queues_path, notice: 'Mail queue was successfully created.' }
 
-        format.html { redirect_to @mail_queue, notice: 'Mail queue was successfully created.' }
+
+
+        # SendImageMailsJob.perform_later(MailQueue.unsent)
         # format.json { render :show, status: :created, location: @mail_queue }
 
         # Create and return an id. This is used by JavaScript inside ajaxImageUpload() function
         format.json { render json: @mail_queue.id }
       else
         format.html { render :new }
-        format.json { render json: @mail_queue.errors, status: :unprocessable_entity }
+        # format.json { render json: @mail_queue.errors, status: :unprocessable_entity }
       end
     end
   end
