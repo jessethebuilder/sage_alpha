@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class ImageMailer < ApplicationMailer
   default from: "Sage Workspace <#{ENV['MAILER_EMAIL']}>"
 
@@ -5,14 +7,13 @@ class ImageMailer < ApplicationMailer
     delivery_options = {:password => ENV['MAILER_PASSWORD']}
     @client = client
 
-    unless Rails.env.development?
+    # unless Rails.env.development?
       email_content_array.each do |c|
         # email_content_array is an array of hashes containting :keyword, :image
-        # :image is a DataURI string
-        # puts c.inspect
-        attachments[c[:keyword]] = URI::Data.new(c[:image]).data
+        # attachments[c[:keyword]] = MiniMagick::Image.open(c[:image])
+        attachments[c[:keyword]] = open(c[:image]).read
       end
-    end
+    # end
 
     mail(to: "#{@client.name} <#{@client.email}>", subject: "Mail Notification", :delivery_method_options => delivery_options)
   end

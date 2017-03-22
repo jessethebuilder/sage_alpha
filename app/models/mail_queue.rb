@@ -1,11 +1,14 @@
 class MailQueue
   include Mongoid::Document
   include Mongoid::Timestamps
+  # include GlobalID::Identification
 
   has_many :mail_images, dependent: :destroy
 
   field :sent_emails_count, type: Integer, default: 0
   field :emails_complete, type: Boolean, default: false
+
+  scope :unsent, -> { where(emails_complete: false) }
 
   def send_emails
     # Uses :client_keyword_matches on each MailImage to sort which attachemnts get sent to which client
@@ -23,17 +26,20 @@ class MailQueue
           if c.id == match[:client_id]
             # If this client matches the client_id
             h = {}
-            h[:image] = img.image
-            h[:keyword] = match[:keyword]
+            image_path = img.image
+            h[:image] = image_path
+            ext = image_path.split('.').last
+            h[:keyword] = match[:keyword] + '.' + ext
             mail_content_array << h
           end
         end
       end
 
       # Client sends the email models/client
-      c.send_email(mail_content_array)
-
-      self.update(sent_emails_count: self.sent_emails_count + 1)
+      unless mail_content_array.blank?
+        c.send_email(mail_content_array)
+        self.update(sent_emails_count: self.sent_emails_count + 1)
+      end
     end
 
     self.update(emails_complete: true)

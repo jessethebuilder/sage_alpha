@@ -25,6 +25,15 @@ gem 'data_uri'
 gem 'fog'
 gem 'faker'
 
+# gem 'sucker_punch'
+gem 'resque'
+gem 'resque-scheduler'
+# gem 'queue_classic'
+# gem 'resque'
+# gem 'sidekiq'
+# gem 'redis'
+# gem 'redis-namespace'
+
 # gem "jquery-fileupload-rails"
 
 gem 'farm_ruby', git: 'https://github.com/jessethebuilder/farm_ruby'

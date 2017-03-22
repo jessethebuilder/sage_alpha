@@ -26,27 +26,19 @@ class MailImagesController < ApplicationController
     # Save to S3
     saved_img.put(body: img.data, acl:'public-read')
 
-    #
-    # tmp_path = Rails.root.join('tmp/temp.' + ext)
-    #
-    # File.open(tmp_path, 'wb'){ |f| f.write(img.data) }
-
     @mail_image.image = "#{S3_BUCKET.url}/#{path}"
 
     tmp_path = MiniMagick::Image.open(@mail_image.image)
     ocr = RTesseract.new(tmp_path)
 
     @mail_image.text = ocr.to_s.strip
-     # ocr.clean
-
-    # Replace image path in S3 for data_uri
 
     @mail_image.queue_emails
+
 
     respond_to do |format|
       if @mail_image.save
         format.json do
-
           render json: true
         end
       else

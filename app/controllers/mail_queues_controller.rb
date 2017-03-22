@@ -35,6 +35,8 @@ class MailQueuesController < ApplicationController
 
     respond_to do |format|
       if @mail_queue.save
+        # SendImageMailsJob.perform_later(MailQueue.unsent)
+
         format.html { redirect_to @mail_queue, notice: 'Mail queue was successfully created.' }
         # format.json { render :show, status: :created, location: @mail_queue }
 
