@@ -22,7 +22,7 @@ gem 'data_uri'
 
 # gem 'tesseract-ocr', '~> 0.1.8'
 
-gem 'fog'
+# gem 'fog'
 gem 'faker'
 
 # gem 'sucker_punch'
@@ -49,25 +49,25 @@ gem 'rtesseract'
 # gem 'tesseract-ocr'
 
 group :test, :development do
-  # gem 'faker'
-  # gem 'rspec-rails'
-  # gem 'database_cleaner', '~> 1.0.0rc'
-  # gem 'timecop'
+  gem 'faker'
+  gem 'rspec-rails'
+  gem 'database_cleaner', '~> 1.0.0rc'
+  gem 'timecop'
 end
 
 group :development do
-  # gem 'web-console'
+  gem 'web-console'
 end
 
 group :test do
-  # gem 'factory_girl_rails'
-  # gem 'capybara'
-  # gem 'guard-rspec'
-  # gem 'selenium-webdriver'
-  # gem 'shoulda'
-  # gem 'launchy', '~> 2.3.0'
-  # #gem 'webrat'
-  # gem 'poltergeist'
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'selenium-webdriver'
+  gem 'shoulda'
+  gem 'launchy', '~> 2.3.0'
+  #gem 'webrat'
+  gem 'poltergeist'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -107,10 +107,10 @@ group :development, :test do
 end
 
 group :development do
-  # gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.0.5'
   # # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  # gem 'spring'
-  # gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
