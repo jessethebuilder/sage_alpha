@@ -25,6 +25,6 @@ set :environment, 'development'
 
 # env 'MAILTO', 'jessethebuilder@yahoo.com'
 
-every 1.minute do
-  rake "sage:send_emails"
-end
+# every 1.minute do
+#   rake "sage:send_emails"
+# end

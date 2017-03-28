@@ -13,6 +13,7 @@ class MailQueue
   scope :unsent, -> { where(emails_complete: false) }
 
   def send_emails
+    count = 0
     # Uses :client_keyword_matches on each MailImage to sort which attachemnts get sent to which client
 
     Client.all.each do |c|
@@ -41,6 +42,7 @@ class MailQueue
       # Client sends the email models/client
       unless mail_content_array.blank?
         c.send_email(mail_content_array)
+        count += 1
         # self.update(sent_emails_count: self.sent_emails_count + 1)
         self.sent_emails_count = self.sent_emails_count + 1
         # Record if this client has been emailed
@@ -50,6 +52,8 @@ class MailQueue
     end
 
     self.update(emails_complete: true)
+
+    return count
   end
 
   def name
