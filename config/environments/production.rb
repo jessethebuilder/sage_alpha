@@ -1,19 +1,22 @@
 Rails.application.configure do
   # ActionMailer::Base.delivery_method = :smtp
-  # config.action_mailer.default_url_options = {:host => 'localhost:3000'}
-  # config.action_mailer.perform_deliveries = true
-  #
-  # config.action_mailer.smtp_settings = {
-  #     :address => "anysoftus.domain.com",
-  #     :port => 587,
-  #     :domain => 'anysoft.us',
-  #     :authentication => 'plain',
-  #     :user_name => ENV['MAILER_EMAIL'],
-  #     :enable_starttls_auto => true,
-  #     :openssl_verify_mode => 'none',
-  #     :password => ENV['MAILER_PASSWORD']
-  # }
-  # Settings specified here will take precedence over those in config/application.rb.
+  ActionMailer::Base.delivery_method = :smtp
+  config.action_mailer.default_url_options = {:host => ENV['MAILER_HOST']}
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.smtp_settings = {
+      :address => ENV['MAILER_SMTP_ADDRESS'],
+      :port => ENV['MAILER_PORT'],
+      :domain => ENV['MAILER_DOMAIN'],
+      :authentication => 'plain',
+      :user_name => ENV['MAILER_EMAIL'],
+      :enable_starttls_auto => true,
+      :openssl_verify_mode => 'none',
+      :password => ENV['MAILER_PASSWORD']
+  }
+
+
 
   # Code is not reloaded between requests.
   config.cache_classes = true
