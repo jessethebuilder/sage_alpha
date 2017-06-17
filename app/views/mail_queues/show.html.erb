@@ -14,24 +14,45 @@
 <%= page_heading "Mail Queue <small>#{@mail_queue.name}</small>".html_safe %>
 
 <div class="container mail_queue">
+  <div class="row header_row">
+    <div class="col-xs-4">
+      <h2 class="text-center">Text</h2>
+    </div>
+    <div class="col-xs-4">
+      <h2 class="text-center">Hits</h2>
+    </div>
+    <div class="col-xs-4">
+    </div>
+  </div>
+
   <% @mail_queue.mail_images.each do |img| %>
     <div class="row mail_image">
-      <div class="col-xs-3">
-        <%= img.text %>
+      <div class="col-xs-4">
+        <div style="overflow-y:scroll; height:200px;padding-right:5px;">
+          <%= img.text %>
+        </div>
       </div>
 
-      <div class="col-xs-3">
-        <% img.client_keyword_matches.each do |ckm| %>
-          <% if Client.where(_id: ckm['client_id']).limit(1).count > 0 %>
-            <%= ckm['keyword'] %>
-            ->
-            <%= Client.find(ckm['client_id']).email %>
-          <% end %>
-        <% end %>
+      <div class="col-xs-4">
+        <div>
+          <ul>
+            <% img.client_keyword_matches.each do |ckm| %>
+              <% if Client.where(_id: ckm['client_id']).limit(1).count > 0 %>
+                <li>
+                  <%= ckm['keyword'] %>
+                  ->
+                  <%= Client.find(ckm['client_id']).email %>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
       </div>
 
-      <div class="col-xs-3">
-        <%= image_tag img.image %>
+      <div class="col-xs-4">
+        <div class="text-center">
+          <%= image_tag img.image %>
+        </div>
       </div>
     </div>
   <% end %>

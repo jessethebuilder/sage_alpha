@@ -12,6 +12,7 @@ development:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
       database: sage_alpha_development
+      # database: mongodb://heroku_97pmz2tm:ttop8qm2kpj3ql8o16a6v73c0d@ds117830.mlab.com:17830/heroku_97pmz2tm
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:

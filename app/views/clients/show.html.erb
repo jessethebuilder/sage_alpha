@@ -1,14 +1,17 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Email:</strong>
-  <%= @client.email %>
-</p>
+<div id="client">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>
+          <%= @client.name %>
+          <small><%= mail_to @client.email %></small>
+        </h2>
+        <div class="well">
+          <h2>Keywords</h2>
+          <%= @client.keywords.join(', ') %>
+      </div>
+    </div><!-- row -->
 
-<p>
-  <strong>Keywords:</strong>
-  <%= @client.keywords %>
-</p>
-
-<%= link_to 'Edit', edit_client_path(@client) %> |
-<%= link_to 'Back', clients_path %>
+  </div>
+</div>

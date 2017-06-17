@@ -14,7 +14,6 @@ Rails.application.routes.draw do
 
   resources :mail_images, only: [:create]
 
-
   devise_for :users
 
   resources :users, only: [:index, :destroy, :create] do

@@ -1,9 +1,9 @@
-class MailQueue
+  class MailQueue
   include Mongoid::Document
   include Mongoid::Timestamps
   # include GlobalID::Identification
 
-  has_many :mail_images, dependent: :destroy
+  has_many :mail_images
 
   field :sent_emails_count, type: Integer, default: 0
   field :emails_complete, type: Boolean, default: false
@@ -22,6 +22,7 @@ class MailQueue
       # Values in :client_keyword_matches (on MailImage) is a hash with 2 keys:
       # :client_id, :keyword
       mail_content_array = []
+      image_attachment_array = []
 
       self.mail_images.each do |img|
         img.client_keyword_matches.each do |match|
@@ -29,12 +30,18 @@ class MailQueue
           if c.id == match[:client_id] && !self.client_ids_that_have_been_emailed.include?(c.id)
             # If this client matches the client_id, and if an email HAS NOT been sent
             # to this client based on this MailQueue
-            h = {}
             image_path = img.image
-            h[:image] = image_path
-            ext = image_path.split('.').last
-            h[:keyword] = match[:keyword] + '.' + ext
-            mail_content_array << h
+            if !image_attachment_array.include?(image_path)
+              # if this image has not already been attached to this email
+              h = {}
+              h[:image] = image_path
+              ext = image_path.split('.').last
+              h[:keyword] = match[:keyword] + '.' + ext
+              mail_content_array << h
+
+              image_attachment_array << image_path
+            end
+
           end
         end
       end
@@ -49,7 +56,7 @@ class MailQueue
         self.client_ids_that_have_been_emailed << c.id
         self.save
       end
-    end
+    end # each Client
 
     self.update(emails_complete: true)
 

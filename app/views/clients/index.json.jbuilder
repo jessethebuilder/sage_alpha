@@ -1,1 +1,1 @@
-json.array! @clients, partial: 'clients/client', as: :client
+son.array! @clients, partial: 'clients/client', as: :client
