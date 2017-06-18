@@ -10,7 +10,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :clients
+  resources :clients do
+    member do
+      get 'custom_mail_queue'
+    end
+  end
 
   resources :mail_images, only: [:create]
 

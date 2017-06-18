@@ -22,7 +22,7 @@ namespace :sage do
     count = 0
 
     MailQueue.unsent.each do |mq|
-      count += mq.send_emails
+      count += mq.send_emails unless mq.custom
     end
 
     F.append("#{Rails.root}/log/rake_log.log", "sage:send_emails at #{Time.now.strftime('%D %r')}. #{count} email/s sent.\n")

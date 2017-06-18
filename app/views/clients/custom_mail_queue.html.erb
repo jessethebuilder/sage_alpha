@@ -1,0 +1,33 @@
+<div id="custom_mail_queue">
+  <%= page_heading "Custom Mail Queue <small>for #{@client.email}</small>".html_safe %>
+
+  <div class="container">
+    <%= form_for @mail_queue do |f| %>
+      <%= f.hidden_field :custom, value: true %>
+      <%= f.hidden_field :client_id, value: @client.id %>
+
+      <%= f.collection_check_boxes(:mail_image_ids, MailImage.all, :id, :thumb) do |cb| %>
+        <div class="col-sm-4">
+          <div class="form-group text-center">
+            <label>
+              <%= image_tag cb.text, height: '150px', class: 'text-center' %>
+              <div>
+                <%= cb.check_box %>
+                <br>
+                Sent: <%= @client.mail_images.include?(cb.object) %>
+              </div>
+            </label>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group text-center">
+            <%= f.submit 'Create', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

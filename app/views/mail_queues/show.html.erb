@@ -1,4 +1,4 @@
-<% unless @mail_queue.emails_complete # disable this for now %>
+<% unless @mail_queue.emails_complete || @mail_queue.custom # disable this for now %>
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
@@ -12,6 +12,19 @@
 <% end %>
 
 <%= page_heading "Mail Queue <small>#{@mail_queue.name}</small>".html_safe %>
+
+<% if @mail_queue.custom %>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>
+          Custom for
+          <%= mail_to @mail_queue.client.email %>
+        </h2>
+      </div>
+    </div>
+  </div>
+<% end %>
 
 <div class="container mail_queue">
   <div class="row header_row">
@@ -28,7 +41,7 @@
   <% @mail_queue.mail_images.each do |img| %>
     <div class="row mail_image">
       <div class="col-xs-4">
-        <div style="overflow-y:scroll; height:200px;padding-right:5px;">
+        <div class="small_box">
           <%= img.text %>
         </div>
       </div>
@@ -51,7 +64,9 @@
 
       <div class="col-xs-4">
         <div class="text-center">
-          <%= image_tag img.image %>
+          <%= link_to img.image, target: '_blank' do %>
+            <%= image_tag img.thumb %>
+          <% end %>
         </div>
       </div>
     </div>

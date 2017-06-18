@@ -15,6 +15,7 @@
               <th></th>
               <th></th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
 
@@ -26,6 +27,7 @@
                 <td><%= c.display_keywords %></td>
                 <td><%= link_to 'View', client_path(c), class: 'btn btn-primary btn-sm' %></td>
                 <td><%= link_to 'Edit', edit_client_path(c), class: 'btn btn-warning btn-sm' %></th>
+                <td><%= link_to 'Custom Queue', custom_mail_queue_client_path(c), class: 'btn btn-default btn-sm' %>
                 <td>
                   <%= link_to 'Delete', client_path(c),
                               method: :delete,

@@ -1,3 +1,12 @@
-<%= page_heading "Edit Client <small>#{@client.email}</small>".html_safe %>
+<div id="client">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= quick_options ['View', client_path(@client)] %>
+      </div>
+    </div>
+  </div>
+
+<%= page_heading "Edit Client <small>#{mail_to @client.email}</small>".html_safe %>
 
 <%= render partial: 'form', locals: {client: @client} %>

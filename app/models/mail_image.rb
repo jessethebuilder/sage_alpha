@@ -6,8 +6,11 @@ class MailImage
 
   field :text, type: String
   field :image, type: String
+  field :thumb, type: String
 
   field :client_keyword_matches, type: Array, default: []
+
+  has_and_belongs_to_many :clients
 
   belongs_to :mail_queue
 

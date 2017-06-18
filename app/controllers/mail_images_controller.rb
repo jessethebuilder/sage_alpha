@@ -28,13 +28,20 @@ class MailImagesController < ApplicationController
 
     @mail_image.image = "#{S3_BUCKET.url}/#{path}"
 
+    # Save Thumbnail
+    thumb = MiniMagick::Image.open(@mail_image.image)
+    thumb.resize("150x150")
+    thumb_path = "#{folder}/thumbs/#{file_name}.#{ext}"
+    saved_thumb = S3_BUCKET.object(thumb_path)
+    saved_thumb.upload_file(thumb.path, acl: 'public-read')
+    @mail_image.thumb = "#{S3_BUCKET.url}/#{thumb_path}"
+
+    # Do OCR
     tmp_path = MiniMagick::Image.open(@mail_image.image)
     ocr = RTesseract.new(tmp_path)
-
     @mail_image.text = ocr.to_s.strip
 
     @mail_image.queue_emails
-
 
     respond_to do |format|
       if @mail_image.save

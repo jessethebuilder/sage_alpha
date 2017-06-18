@@ -1,7 +1,10 @@
 class ClientsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_client, only: [:show, :edit, :update, :destroy]
+  before_action :set_client, only: [:show, :edit, :update, :destroy, :custom_mail_queue]
 
+  def custom_mail_queue
+    @mail_queue = MailQueue.new
+  end
 
   # GET /clients
   # GET /clients.json

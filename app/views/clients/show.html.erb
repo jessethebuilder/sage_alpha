@@ -1,5 +1,12 @@
-
 <div id="client">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= quick_options ['Edit', edit_client_path(@client)] %>
+      </div>
+    </div>
+  </div>
+  
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
@@ -13,5 +20,19 @@
       </div>
     </div><!-- row -->
 
+    <% @client.mail_images.order(updated_at: :desc).in_groups_of(3) do |mail_image_group| %>
+      <div class="row">
+         <% mail_image_group.each do |mi| %>
+           <div class="col-sm-4">
+             <% if mi %>
+              <div class="text-center">
+                <%= image_tag mi.image, height: '150px'; %>
+
+              </div>
+            <% end %>
+           </div>
+         <% end %>
+      </div><!-- row -->
+    <% end %>
   </div>
 </div>

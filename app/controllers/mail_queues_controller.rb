@@ -35,10 +35,21 @@ class MailQueuesController < ApplicationController
 
     respond_to do |format|
       if @mail_queue.save
-        # format.html { redirect_to @mail_queue, notice: 'Mail queue was successfully created.' }
-        format.html { redirect_to mail_queues_path, notice: 'Mail queue was successfully created.' }
+        if(mail_queue_params[:mail_image_ids])
+          mail_queue_params[:mail_image_ids].each do |id|
+            unless id.blank?
+              @mail_queue.mail_images << MailImage.find(id)
+            end
+          end
+          # puts(mail_queue_params[:mail_image_ids])
+        end
 
-
+        if @mail_queue.custom
+          @mail_queue.send_email
+          format.html { redirect_to @mail_queue, notice: 'Mail Queue was created and emailed.' }
+        else
+          format.html { redirect_to mail_queues_path, notice: 'Mail Queue was successfully created.' }
+        end
 
         # SendImageMailsJob.perform_later(MailQueue.unsent)
         # format.json { render :show, status: :created, location: @mail_queue }
@@ -57,7 +68,7 @@ class MailQueuesController < ApplicationController
   def update
     respond_to do |format|
       if @mail_queue.update(mail_queue_params)
-        format.html { redirect_to @mail_queue, notice: 'Mail queue was successfully updated.' }
+        format.html { redirect_to @mail_queue, notice: 'Mail Queue was successfully updated.' }
         format.json { render :show, status: :ok, location: @mail_queue }
       else
         format.html { render :edit }
@@ -71,7 +82,7 @@ class MailQueuesController < ApplicationController
   def destroy
     @mail_queue.destroy
     respond_to do |format|
-      format.html { redirect_to mail_queues_url, notice: 'Mail queue was successfully destroyed.' }
+      format.html { redirect_to mail_queues_url, notice: 'Mail Queue was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -85,6 +96,6 @@ class MailQueuesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def mail_queue_params
       # params.fetch({images: []})
-      params.require(:mail_queue).permit(mail_image_attributes: [:image, :text])
+      params.require(:mail_queue).permit(:custom, :client_id, {mail_image_ids: []}, mail_image_attributes: [:image, :text] )
     end
 end
