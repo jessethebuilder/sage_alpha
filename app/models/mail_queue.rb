@@ -17,10 +17,11 @@ class MailQueue
   field :sent_emails_count, type: Integer, default: 0
   field :emails_complete, type: Boolean, default: false
 
-  field :client_ids_that_have_been_emailed, type: Array, default: []
+  # field :client_ids_that_have_been_emailed, type: Array, default: []
 
-  field :custom, type: Boolean, default: false
-  belongs_to :client, optional: true
+  # field :custom, type: Boolean, default: false
+
+  # belongs_to :client, optional: true
 
   scope :unsent, -> { where(emails_complete: false) }
 
@@ -34,13 +35,13 @@ class MailQueue
       ext = h[:image].split('.').last
       h[:keyword] = "image#{i}.#{ext}"
       mail_content_array << h
-      client.mail_images << mi
     end
 
     client.send_email(mail_content_array)
     sent_emails_count = 1
     # Record if this client has been emailed
-    client_ids_that_have_been_emailed << client.id
+    # client_ids_that_have_been_emailed << client.id
+    emails_complete = true
     save
   end
 
@@ -54,12 +55,12 @@ class MailQueue
       # Values in :client_keyword_matches (on MailImage) is a hash with 2 keys:
       # :client_id, :keyword
       mail_content_array = []
+      matches = []
       # image_attachment_array = []
 
       self.mail_images.each do |img|
         img.client_keyword_matches.each do |match|
-
-          if c.id == match[:client_id] && !self.client_ids_that_have_been_emailed.include?(c.id)
+          if c.id == match.client.id && !matches.map{ |m| puts m.inspect }.include?(c.id)
             # If this client matches the client_id, and if an email HAS NOT been sent
             # to this client based on this MailQueue
             # if !image_attachment_array.include?(image_path)
@@ -69,11 +70,11 @@ class MailQueue
               h = {}
               h[:image] = image_path
               ext = image_path.split('.').last
-              h[:keyword] = match[:keyword] + '.' + ext
+              h[:keyword] = match.keyword + '.' + ext
               mail_content_array << h
 
               c.mail_images << img
-              # image_attachment_array << image_path
+              matches << match
             end
 
           end
@@ -87,11 +88,12 @@ class MailQueue
         # self.update(sent_emails_count: self.sent_emails_count + 1)
         self.sent_emails_count = self.sent_emails_count + 1
         # Record if this client has been emailed
-        self.client_ids_that_have_been_emailed << c.id
+        # self.client_ids_that_have_been_emailed << c.id
         self.save
       end
     end # each Client
 
+    matches.each{ |m| m.update(email_sent: true) }
     self.update(emails_complete: true)
 
     return count

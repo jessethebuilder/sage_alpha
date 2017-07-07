@@ -9,6 +9,8 @@ gem 'mongoid'
 
 gem 'bootstrap-sass'
 
+gem 'jquery-ui-rails'
+
 gem 'devise'
 # gem 'kaminari'
 
@@ -20,22 +22,14 @@ gem 'mini_magick'
 
 gem 'data_uri'
 
+
+
 # gem 'tesseract-ocr', '~> 0.1.8'
 
 # gem 'fog'
 gem 'faker'
 
 gem 'whenever', :require => false
-# gem 'sucker_punch'
-# gem 'resque'
-# gem 'resque-scheduler'
-# gem 'queue_classic'
-# gem 'resque'
-# gem 'sidekiq'
-# gem 'redis'
-# gem 'redis-namespace'
-
-# gem "jquery-fileupload-rails"
 
 gem 'farm_ruby', git: 'https://github.com/jessethebuilder/farm_ruby'
 

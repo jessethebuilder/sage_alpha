@@ -3,12 +3,23 @@ class Client
   include Mongoid::Timestamps
 
   field :name, type: String
-  field :email, type: String
-  field :keywords, type: Array, default: []
-
   validates :name, presence: true
+
+  field :email, type: String
   validates :email, presence: true
+
+  field :keywords, type: Array, default: []
   validates :keywords, presence: true
+
+  field :company_name, type: String
+
+  field :phone, type: String
+
+  field :client_number, type: String
+
+  has_many :client_keyword_matches
+  # has_many :mail_images
+
 
   has_and_belongs_to_many :mail_images
   has_many :mail_queues

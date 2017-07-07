@@ -6,7 +6,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
@@ -20,18 +20,23 @@
       </div>
     </div><!-- row -->
 
-    <% @client.mail_images.order(updated_at: :desc).in_groups_of(3) do |mail_image_group| %>
+    <% @client.mail_images.order(updated_at: :desc).group_by{ |mi| mi.created_at.strftime('%D') }.each do |date, mi_group| %>
       <div class="row">
-         <% mail_image_group.each do |mi| %>
-           <div class="col-sm-4">
-             <% if mi %>
-              <div class="text-center">
-                <%= image_tag mi.image, height: '150px'; %>
+        <div class="col-xs-12">
+          <h2 class="text-center"><%= date %></h2>
 
+        </div>
+        <% mi_group.each do |mi| %>
+          <div class="row inner">
+            <div class="col-sm-4">
+              <div class="thumb">
+                <%= image_tag mi.thumb %>
               </div>
-            <% end %>
-           </div>
-         <% end %>
+            </div>
+          </div>
+
+        <% end %>
+
       </div><!-- row -->
     <% end %>
   </div>

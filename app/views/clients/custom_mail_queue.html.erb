@@ -7,20 +7,18 @@
       <%= f.hidden_field :client_id, value: @client.id %>
 
       <%= f.collection_check_boxes(:mail_image_ids, MailImage.all, :id, :thumb) do |cb| %>
-        <% unless cb.object.thumb.blank? %>
-          <div class="col-sm-4">
-            <div class="form-group text-center">
-              <label>
-                <%= image_tag cb.text, height: '150px', class: 'text-center' %>
-                <div>
-                  <%= cb.check_box %>
-                  <br>
-                  Sent: <%= @client.mail_images.include?(cb.object) %>
-                </div>
-              </label>
-            </div>
+        <div class="col-sm-4">
+          <div class="form-group text-center">
+            <label>
+              <%= image_tag cb.text, height: '150px', class: 'text-center' %>
+              <div>
+                <%= cb.check_box %>
+                <br>
+                Sent: <%= @client.mail_images.include?(cb.object) %>
+              </div>
+            </label>
           </div>
-        <% end %>  
+        </div>
       <% end %>
 
       <div class="row">

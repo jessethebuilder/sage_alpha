@@ -16,7 +16,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :mail_images, only: [:create]
+
+  resources :mail_images, only: [:create, :show]
 
   devise_for :users
 
@@ -30,6 +31,8 @@ Rails.application.routes.draw do
       get 'unknown'
     end
   end
+
+  resource :client_keyword_matches, only: [:create]
 
   root to: "users#unknown"
 end

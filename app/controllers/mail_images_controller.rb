@@ -30,7 +30,7 @@ class MailImagesController < ApplicationController
 
     # Save Thumbnail
     thumb = MiniMagick::Image.open(@mail_image.image)
-    thumb.resize("150x150")
+    thumb.resize("50x50")
     thumb_path = "#{folder}/thumbs/#{file_name}.#{ext}"
     saved_thumb = S3_BUCKET.object(thumb_path)
     saved_thumb.upload_file(thumb.path, acl: 'public-read')
@@ -41,12 +41,12 @@ class MailImagesController < ApplicationController
     ocr = RTesseract.new(tmp_path)
     @mail_image.text = ocr.to_s.strip
 
-    @mail_image.queue_emails
+    @mail_image.match_to_clients
 
     respond_to do |format|
       if @mail_image.save
         format.json do
-          render json: true
+          render json: {'id': @mail_image.to_param}
         end
       else
         format.html { render :new }

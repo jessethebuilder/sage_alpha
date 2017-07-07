@@ -13,6 +13,8 @@
 //= require jquery
 //= require turbolinks
 //= require jquery_ujs
+//= require jquery-ui/widgets/draggable
+//= require jquery-ui/widgets/droppable
 //= require bootstrap
 //= require farm_shed/all.js
 //= require mail_queue_builder

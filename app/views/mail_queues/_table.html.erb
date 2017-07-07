@@ -1,0 +1,51 @@
+<table id="mail_queue_table" class="table">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Images</th>
+
+  <% @clients.each do |c| %>
+    <tr>
+      <td>
+        <ul>
+          <li><%= c.name %></li>
+          <li><%= mail_to c.email %></li>
+          <% unless c.phone.blank? %>
+          <li><%= link_to c.phone, "tel:#{c.phone}" %></li>
+          <% end %>
+          <% unless c.company_name.blank? %>
+          <li>Company: <%= c.company_name  %></li>
+          <% end %>
+          <li>
+            <strong>
+              <%= c.keywords.join(', ') %>
+            </strong>
+          </li>
+        </ul>
+      </td>
+
+      <td>
+        <% @mail_queue.mail_images.each do |mi| %>
+          <% if c.mail_images.include?(mi) %>
+            <table class="table inner">
+              <tbody>
+                <tr>
+                  <td>
+                    <%= image_tag mi.thumb %>
+                  </td>
+                  <td>
+                    <ul>
+                      <% mi.client_keyword_matches.map{ |ckm| ckm.keyword }.uniq.each do |keyword| %>
+                        <li><%= keyword %></li>
+                      <% end %>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+        <% end # each mail_image %>
+      </td>
+    </tr>
+  <% end # each client %>
+</table>

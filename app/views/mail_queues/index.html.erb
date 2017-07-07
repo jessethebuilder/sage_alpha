@@ -12,7 +12,6 @@
               Created At
             </th>
             <th>Complete</th>
-            <th>Custom for</th>
             <th>Email/s Sent</th>
             <th></th>
           </tr>
@@ -25,11 +24,6 @@
               </td>
               <td>
                 <%= mq.emails_complete %>
-              </td>
-              <td>
-                <% if mq.custom %>
-                  <%= mq.client.email %>
-                <% end %>
               </td>
               <td>
                 <%= mq.sent_emails_count %>

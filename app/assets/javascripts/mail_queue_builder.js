@@ -75,9 +75,9 @@ function MailQueueBuilder(){
               id: t.mail_queue_id
             }
         },
-        success: function(){
+        success: function(data){
           t.upload_count += 1;
-          fullfill();
+          fullfill(data);
         }
       });
     });
@@ -87,11 +87,10 @@ function MailQueueBuilder(){
     var t = this;
 
     $.each(t.files, function(i, file){
-      t.uploadFile(file.data).then(function(){
+      t.uploadFile(file.data).then(function(data){
         if(t.upload_count === t.files.length){
           t.feedback.html("All Uploads Complete!");
-          // window.location = "/mail_queues/" + t.mail_queue_id;
-          window.location = "/mail_queues";
+          window.location = "/mail_queues/" + t.mail_queue_id;
         } else {
           t.feedback.html("Uploaded " + t.upload_count + " Images.");
         }
