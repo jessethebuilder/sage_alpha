@@ -1,5 +1,6 @@
 class ClientsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_admin!, except: [:edit, :update]
+  before_action :authenticate_user!, only: [:edit, :update]
   before_action :set_client, only: [:show, :edit, :update, :destroy, :custom_mail_queue]
 
   def custom_mail_queue

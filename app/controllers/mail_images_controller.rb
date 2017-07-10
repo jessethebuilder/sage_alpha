@@ -2,7 +2,7 @@
 # require 'tesseract-ocr'
 
 class MailImagesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_admin!
 
   def create
     @mail_image = MailImage.new(mail_image_params)

@@ -17,4 +17,4 @@
 .byebug_history
 
 /config/environments/development.rb
-/config/environments/temp.rb
+/config/environments/test.rb

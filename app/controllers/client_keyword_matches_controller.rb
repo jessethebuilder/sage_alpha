@@ -1,4 +1,6 @@
 class ClientKeywordMatchesController < ApplicationController
+  before_action :authenticate_admin!
+  
   def create
     @client_keyword_match = ClientKeywordMatch.new(client_keyword_match_params)
     @client_keyword_match.client = Client.find(client_keyword_match_params[:client_id])
@@ -9,7 +11,7 @@ class ClientKeywordMatchesController < ApplicationController
     respond_to do |format|
       if(@client_keyword_match.save!)
         # Directly copied from mail_queues#show. Perehaps all of this code would be better
-        # in a mail_queues_controller 
+        # in a mail_queues_controller
         @mail_queue = @client_keyword_match.mail_image.mail_queue
         @clients = []
         @mail_queue.mail_images.each do |mi|

@@ -1,5 +1,5 @@
 class MailQueuesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_admin!
   before_action :set_mail_queue, only: [:show, :edit, :update, :destroy, :send_emails]
   skip_before_action :verify_authenticity_token, only: [:create, :update]
 
