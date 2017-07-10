@@ -24,163 +24,96 @@
 
   <div id="mail_image_selection" class="container">
     <div class="row">
-      <div class="col-xs-12">
-        <h2>Images</h2>
-      </div>
-    </div>
-
-    <div class="row">
       <div class="col-xs-6">
         <% @mail_queue.mail_images.each do |mi| %>
-          <%= content_tag :div, class: 'mail_image', data: {client_ids: mi.clients.map{ |c| c.id }.join(','),
-                                                            id: mi.to_param} do %>
-            <%= image_tag mi.thumb, class: 'thumb' %>
-            <%= image_tag mi.image, class: 'hidden image' %>
-            <div class="text">
-              <%= link_to 'view text', '#' %>
-            </div>
-          <% end %>
+          <div class="row">
+            <div class="col-xs-4">
+              <ul class="controls">
+                <li>
+                  <%= link_to 'Image', '#', class: 'image_popover_control click_control',
+                              data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} %>
+                </li>
+                <li>
+                  <%= link_to 'Text', '#', class: 'text_popover_control click_control',
+                              data: {'mail-image-id' => mi.to_param, 'text' => mi.text} %>
+                </li>
+              </ul>
+            </div><!-- inner col -->
+            <div class="col-xs-8">
+              <%= content_tag :div, class: 'mail_image', data: {'client-ids' => mi.clients.map{ |c| c.id }.join(','),
+                                                                id: mi.to_param} do %>
+                <%= image_tag mi.thumb, class: 'thumb' %>
+              <% end %>
+            </div><!-- inner col -->
+          </div><!-- inner row -->
         <% end %>
-      </div><!-- col -->
+      </div><!-- outer col -->
       <div class="col-xs-6">
         <% Client.all.each do |c| %>
-          <%= content_tag :div, class: 'client', data: {client_id: c.to_param } do %>
+          <%= content_tag :div, class: 'client', data: {'client-id' => c.to_param } do %>
             <%= c.name %>
           <% end %>
         <% end %>
-      </div><!-- col -->
-    </div><!-- row -->
+      </div><!-- outer col -->
+    </div>
   </div><!-- cont -->
 </div>
 
 <script>
-
-  function MailQueuer(){
-    this.box = $('#mail_image_selection');
-    this.mail_images = this.box.find('.mail_image');
-    this.clients = this.box.find('.client');
-
-    //--- End Constructor -----------------------------------------------
-
-    //--- Classes -------------------------------------------------
-    function MailImage(element){
-      this.element = element;
-      this.ids = $(this.element).data('client-ids').split(',');
-      this.id = $(this.element).data('id');
-    }
-
-    function Client(element){
-      this.element = element;
-      this.id = $(this.element).data('client-id');
-    }
-
-    this.activateMailImage = function(element){
-      var mi = new MailImage(element);
-      this.active_mail_image = mi;
-      this.showAllClients();
-      this.hideNonMatchingClients();
-    }
-
-    this.deactivateMailImage = function(){
-      this.active_mail_image.element.css('top', '0').css('left', '0');
-      this.active_mail_image = null;
-      this.showAllClients();
-    }
-
-    this.activateClient = function(element){
-      var c = new Client(element);
-      this.active_client = c;
-      c.element.addClass('active');
-    }
-
-    this.deactivateClient = function(){
-      this.active_client.element.removeClass('active');
-      this.active_client = null;
-    }
-
-    this.createClientKeywordMatch = function(element){
-      var t = this;
-      if(element[0] == this.active_client.element[0]){
-        // If the element dropped on is the same as the activated element.
-        $.ajax({
-          method: 'POST',
-          url: '/client_keyword_matches',
-          data: {
-            client_keyword_match:{
-              client_id: this.active_client.id,
-              mail_image_id: this.active_mail_image.id,
-              keyword: '**admin_action**'
-            }
-          },
-          complete: function(results){
-            // $.ajax({
-            //   method: 'GET',
-            //   url: '/mail_queues/' + this.
-            // });
-          }
-        });
-      }
-    }
-
-    //--- Functions ------------------------------------------------
-    this.initDragDrop = function(){
-      var t = this;
-
-      $.each(t.mail_images, function(i, mi){
-        $(mi).draggable({
-          start: function(e, ui){
-            t.activateMailImage($(this));
-          },
-          stop: function(e, ui){
-            t.deactivateMailImage();
-          },
-          drag: function(e, ui){
-          }
-        });
-      });
-
-
-      $.each(t.clients, function(i, c){
-        $(c).droppable({
-          over: function(e, ui){
-            t.activateClient($(this));
-          },
-          out: function(e, ui){
-            t.deactivateClient();
-          },
-          drop: function(e, ui){
-            t.createClientKeywordMatch($(e.target));
-            t.deactivateClient();
-          }
-        });
-      });
-    };
-
-    this.showAllClients = function(){
-      $.each(this.clients, function(i, mi){
-        $(mi).show();
-      });
-    };
-
-    this.hideNonMatchingClients = function(){
-      // Hides Clients that do not match MailImage.
-      var ids = this.active_mail_image.ids;
-
-      // for(var i = 0; i < this.clients.length; i++){
-
-        for(var i = 0; i < ids.length; i++){
-          $('[data-client-id="' + ids[i] + '"]').hide();
-        } // each id
-      // } // each client
-    }
-
-
+  function MailQueuePopovers(){
+    this.image_links = $('.image_popover_control');
+    this.text_links = $('.text_popover_control');
 
     this.init = function(){
-      this.initDragDrop();
+      const t = this;
+
+      this.text_links.click(function(e){
+        e.preventDefault();
+      });
+
+      this.image_links.click(function(e){
+        e.preventDefault();
+      });
+
+      $.each(t.image_links, function(i, link){
+        link = $(link);
+        var img_src = link.data('image-url');
+
+        var doc_w = $(document).width();
+        var link_w = link.width();
+        var pos = link.offset();
+        var w = doc_w - pos['left'] - link_w - 50;
+
+        $(link).popover({
+          html: true,
+          trigger: 'focus',
+          // placement: 'auto left',
+          // container: true,
+          content: function(){
+            return '<img src="' + img_src + '" width="' + w + 'px" />';
+          }
+        });
+      }); // each image_link
+
+      $.each(t.text_links, function(i, link){
+        link = $(link);
+        var text = link.data('text');
+        $(link).popover({
+          html: true,
+          trigger: 'focus',
+          content: function(){
+            return text;
+          },
+        });
+      }); // each text_link
     }
   }
 
+  var mqp = new MailQueuePopovers();
+  mqp.init();
+</script>
+
+<script>
   $(document).ready(function(){
     var mq = new MailQueuer();
     mq.init();

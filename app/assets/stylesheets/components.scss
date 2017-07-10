@@ -1,6 +1,26 @@
-.small_box{
-  overflow-y: scroll;
-  max-height: 150px;
-  padding-right: 5px;
-  font-size: 10px;
+.click_control{
+  font-size: 18px;
+  color: black;
+  text-decoration: none;
+  
+}
+.click_control:visited{
+  text-decoration: none;
+}
+
+
+.click_control:hover{
+  color: black;
+  text-decoration: none;
+}
+
+.click_control:active{
+  text-decoration: none;
+}
+
+.controls{
+  padding-left: 0px;
+  li{
+    list-style: none;
+  }
 }

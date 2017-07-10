@@ -14,20 +14,29 @@
 }
 
 #mail_image_selection{
+  padding: 20px;
+  background-color: #dddddd;
+
+
   .client{
     font-size: 24px;
     padding:5px;
     margin-bottom: 10px;
     text-align: center;
-    background-color: #ccc;
+    background-color: #333;
+    color: white;
   }
 
   .client.active{
+    color: black;
     background-color: white;
   }
 
   .mail_image{
     z-index: 50;
+    width: 50px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
   }
 }
 
@@ -39,17 +48,22 @@
     }
   }
 
-  table.inner{
-    margin: 0px;
-
-
-    td{
-      padding: 4px;
-      border-width: 0px;
-    }
+  .body_row{
+    border-bottom: 1px solid #ccc;
+    padding-top: 10px;
   }
 
-  table.inner:nth-child(odd){
-    // background-color: #ddd;
-  }
+  // table.inner{
+  //   margin: 0px;
+  //
+  //
+  //   td{
+  //     padding: 4px;
+  //     border-width: 0px;
+  //   }
+  // }
+  //
+  // table.inner:nth-child(odd){
+  //   // background-color: #ddd;
+  // }
 }
