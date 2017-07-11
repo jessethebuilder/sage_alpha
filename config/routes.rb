@@ -10,16 +10,19 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :clients do
-    member do
-      get 'custom_mail_queue'
-    end
-  end
 
 
   resources :mail_images, only: [:create, :show]
 
   devise_for :users
+
+  # devise_for :clients
+
+  resources :clients do
+    member do
+      get 'custom_mail_queue'
+    end
+  end
 
   resources :users, only: [:index, :destroy, :create] do
     member do

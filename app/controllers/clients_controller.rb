@@ -1,4 +1,5 @@
 class ClientsController < ApplicationController
+  include FarmShed
   before_action :authenticate_admin!, except: [:edit, :update]
   before_action :authenticate_user!, only: [:edit, :update]
   before_action :set_client, only: [:show, :edit, :update, :destroy, :custom_mail_queue]
@@ -34,6 +35,7 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
+        ClientMailer.after_sign_up(@client, pw).deliver_now
         format.html { redirect_to clients_path, notice: "Client: #{@client.email} was sucessfully created." }
         # format.json { render :show, status: :created, location: @client }
       else
@@ -75,6 +77,6 @@ class ClientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def client_params
-      params.require(:client).permit(:email, :keywords, :name, :company_name, :phone, :client_number)
+      params.require(:client).permit(:email, :keywords, :first_name, :last_name, :company_name, :phone, :client_number)
     end
 end

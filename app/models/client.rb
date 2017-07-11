@@ -2,11 +2,13 @@ class Client
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :name, type: String
-  validates :name, presence: true
+  field :first_name, type: String
+  validates :first_name, presence: true
+
+  field :last_name, type: String
 
   field :email, type: String
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: true
 
   field :keywords, type: Array, default: []
   validates :keywords, presence: true
@@ -18,8 +20,17 @@ class Client
   field :client_number, type: String
 
   has_many :client_keyword_matches
+
+  def name
+    n = self.first_name
+    n += " #{self.last_name}" unless self.last_name.blank?
+    n
+  end
   # has_many :mail_images
 
+  # :user is only optional, so Client can be created. The after_create action below
+  # always creates a User for this client when Client is created
+  belongs_to :user, dependent: :destroy, optional: true
 
   has_and_belongs_to_many :mail_images
   has_many :mail_queues
@@ -43,5 +54,17 @@ class Client
 
   def display_keywords
     self.keywords.join(', ')
+  end
+
+  after_create :create_user
+
+  private
+
+  def create_user
+    pw = random_password
+    u = User.new(email: self.email, password: pw)
+    self.user = u
+    self.save
+    u.save
   end
 end

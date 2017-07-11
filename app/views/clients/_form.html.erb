@@ -5,10 +5,20 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="form-group req">
-          <%= f.label :name %>
-          <%= f.text_field :name %>
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name %>
         </div>
       </div>
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name %>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+    <div class="row">
       <div class="col-sm-4">
         <div class="form-group req">
           <%= f.label :email %>
@@ -21,6 +31,7 @@
           <%= f.text_field :phone %>
         </div>
       </div>
+      <div class="col-sm-4"></div>
     </div>
 
     <div class="row">
@@ -33,7 +44,7 @@
       <div class="col-sm-4">
         <div class="form-group">
           <%= f.label :client_number %>
-          <%= f.text_field :client_number %>
+          <%= f.text_field :client_number %>  
         </div>
       </div>
       <div class="col-sm-4"></div>
@@ -54,6 +65,13 @@
         <div class="form-group">
           <%= f.submit class: 'btn btn-primary' %>
         </div>
+        <% unless @client.new_record? %>
+          <div class="form-group">
+            <%= link_to 'Delete', client_path(@client),
+                        method: :delete, class: 'btn btn-danger',
+                        data: {confirm: 'Are you sure? This is permanent!'} %>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>

@@ -6,11 +6,13 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.password = "#{Faker::Lorem.word}-#{Faker::Lorem.word}-#{Random.rand(1000..9999)}"
     @user.save
-    redirect_to users_path, notice: "#{@user.email} has been saved as user" 
+    redirect_to users_path, notice: "#{@user.email} has been saved as user"
   end
 
   def index
-    @users = User.all.order(updated_at: :desc)
+    # @users = User.all.order(updated_at: :desc)
+    @users = User.clientless.order(updated_at: :desc)
+
     @user = User.new
   end
 
@@ -39,7 +41,11 @@ class UsersController < ApplicationController
   def unknown
     # root route and currently the only route available to non-users
     if user_signed_in?
-      redirect_to mail_queues_path
+      if current_user.admin?
+        redirect_to mail_queues_path
+      else
+        redirect_to client_path(current_user.client)
+      end
     else
       redirect_to new_user_session_path
     end

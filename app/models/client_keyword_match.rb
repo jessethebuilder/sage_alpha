@@ -5,6 +5,7 @@ class ClientKeywordMatch
   belongs_to :mail_image
   validates :mail_image, presence: true
 
+  # embedded_in :client
   belongs_to :client
   validates :client, presence: true
 

@@ -28,6 +28,16 @@ class User
 
   field :admin, type: Boolean, default: false
 
+  scope :clientless, -> do
+    # Clientless is used to determine which Users are not generated from creating
+    # a Client. Essentially, admins, at this point. 
+    clients = Client.where(:user_id.exists => true)
+    ids = clients.map{ |c| c.user_id }
+    User.not_in(_id: ids)
+  end
+
+  has_one :client
+
   ## Confirmable
   # field :confirmation_token,   type: String
   # field :confirmed_at,         type: Time
