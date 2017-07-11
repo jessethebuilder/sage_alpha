@@ -4,7 +4,7 @@ class MailImageRequestsController < ApplicationController
   # GET /mail_image_requests
   # GET /mail_image_requests.json
   def index
-    @mail_image_requests = MailImageRequest.all.order(complete: :desc)
+    @mail_image_requests = MailImageRequest.all.order(complete: :asc)
   end
 
   # GET /mail_image_requests/1
