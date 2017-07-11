@@ -1,0 +1,23 @@
+<%= content_tag :div, class: 'row mail_image_request', id: "mail_image_request_#{mail_image_request.to_param}" do %>
+  <div class="col-xs-6">
+    <%= mail_image_request.type.titlecase %>
+    <span class="date">
+      <%= mail_image_request.created_at.strftime('%B %e, %Y') %>
+    </span>
+  </div>
+  <div class="col-xs-6">
+  <% if mail_image_request.complete? %>
+    &nbsp;&nbsp;&nbsp;
+    Completed -
+    <span class="date">
+      <%= mail_image_request.completed_at.strftime('%B %e, %Y') %>
+    </span>
+  <% else %>
+    <!-- <div class="form-group"> -->
+      <%= link_to 'cancel', mail_image_request_path(mail_image_request),
+                  remote: true, method: :delete,
+                  class: 'btn btn-danger btn-sm cancel_button' %>
+    <!-- </div> -->
+  <% end %>
+</div>
+<% end %>

@@ -20,24 +20,73 @@
       </div>
     </div><!-- row -->
 
-    <% @client.mail_images.order(updated_at: :desc).group_by{ |mi| mi.created_at.strftime('%D') }.each do |date, mi_group| %>
+    <% @client.mail_images.order(updated_at: :desc).group_by{ |mi| mi.created_at.to_date }.each do |date, mi_group| %>
       <div class="row">
         <div class="col-xs-12">
-          <h2 class="text-center"><%= date %></h2>
-
+          <h2 class="text-center" style="margin-bottom:30px;"><%= date.strftime('%B %e, %Y') %></h2>
         </div>
-        <% mi_group.each do |mi| %>
-          <div class="row inner">
-            <div class="col-sm-4">
-              <div class="thumb">
-                <%= image_tag mi.thumb %>
+        <div class="mail_image_list">
+          <% mi_group.each do |mi| %>
+            <%= content_tag :div, class: 'row mail_image_row', id: "mail_image_row_#{mi.to_param}" do %>
+              <div class="col-xs-3">
+                <%= link_to '#', class: 'image_popover_control click_control',
+                data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
+                <%= image_tag mi.image, width: '100%', class: 'mail_image_image' %>
+                <% end %>
+
               </div>
-            </div>
-          </div>
-
-        <% end %>
-
+              <div class="col-xs-3">
+                <div class="controls">
+                  <div class="form-group">
+                    <%= link_to 'Request Forward',
+                                 mail_image_requests_path(mail_image_request: {
+                                                            type: 'forward',
+                                                            client_id: @client.to_param,
+                                                            mail_image_id: mi.to_param
+                                                          }),
+                                 method: :post,
+                                 class: 'btn btn-primary btn-sm', remote: true %>
+                  </div>
+                  <div class="form-group">
+                    <%= link_to 'Request Scan',
+                                mail_image_requests_path(mail_image_request: {
+                                                            type: 'scan',
+                                                            client_id: @client.to_param,
+                                                            mail_image_id: mi.to_param
+                                                        }),
+                                method: :post,
+                                class: 'btn btn-warning btn-sm', remote: true %>
+                  </div>
+                  <div class="form-group">
+                    <%= link_to 'Request Disposal',
+                                mail_image_requests_path(mail_image_request: {
+                                                          type: 'disposal',
+                                                          client_id: @client.to_param,
+                                                          mail_image_id: mi.to_param
+                                                        }),
+                                method: :post,
+                                class: 'btn btn-danger btn-sm', remote: true %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="mail_image_requests">
+                  <% mi.mail_image_requests.where(client_id: @client).each do |mir| %>
+                    <%= render partial: 'mail_image_requests/show', locals: {mail_image_request: mir} %>
+                  <% end %>
+                </div>
+              </div>
+            <% end # mail_image row %>
+          <% end %>
+        </div>
       </div><!-- row -->
     <% end %>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    var mqp = new MailQueuePopovers();
+    mqp.init();
+  });
+</script>

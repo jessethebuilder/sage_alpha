@@ -1,5 +1,6 @@
 # require 'resque/server'
 Rails.application.routes.draw do
+  resources :mail_image_requests
   # mount Resque::Server.new, at: '/resque'
 
   resources :comments

@@ -18,6 +18,8 @@ class MailImage
 
   has_many :client_keyword_matches, dependent: :destroy
 
+  has_many :mail_image_requests
+
   def match_to_clients
     # Checks each Client for a keyword match with this MailImage. If a match
     # exists, create a hash and add to this MailImages :client_keyword_matches attr.

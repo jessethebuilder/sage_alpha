@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @mail_image_request.type %>
+</p>
+
+<p>
+  <strong>Complete:</strong>
+  <%= @mail_image_request.complete %>
+</p>
+
+<p>
+  <strong>Completed at:</strong>
+  <%= @mail_image_request.completed_at %>
+</p>
+
+<%= link_to 'Edit', edit_mail_image_request_path(@mail_image_request) %> |
+<%= link_to 'Back', mail_image_requests_path %>

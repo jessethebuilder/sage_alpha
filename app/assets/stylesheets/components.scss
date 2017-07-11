@@ -2,7 +2,7 @@
   font-size: 18px;
   color: black;
   text-decoration: none;
-  
+
 }
 .click_control:visited{
   text-decoration: none;
@@ -23,4 +23,38 @@
   li{
     list-style: none;
   }
+}
+
+.mail_image_list{
+  .mail_image_row{
+    margin-bottom: 20px;
+  }
+  .mail_image_image{
+
+  }
+
+  .controls{
+    text-align: center;
+
+    .form-group{
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.mail_image_requests{
+  .mail_image_request{
+    font-size: 20px;
+
+
+    .cancel_button{
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.date{
+  font-size: 12px;
+  color: $text_color_3;
 }

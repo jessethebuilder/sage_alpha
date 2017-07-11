@@ -1,0 +1,8 @@
+var selector = '#mail_image_request_<%= j @destroyed_id %>';
+var mir = $(selector);
+mir.hide(350, function(){
+  mir.detach();
+
+});
+
+// console.log(selector);

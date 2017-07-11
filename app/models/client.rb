@@ -21,6 +21,8 @@ class Client
 
   has_many :client_keyword_matches
 
+  has_many :mail_image_requests
+
   def name
     n = self.first_name
     n += " #{self.last_name}" unless self.last_name.blank?

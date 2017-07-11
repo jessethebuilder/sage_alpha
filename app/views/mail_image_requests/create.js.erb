@@ -1,0 +1,14 @@
+var selector = '#mail_image_row_<%= j @mail_image_request.mail_image.to_param %>';
+var row = $(selector);
+
+// console.log(row);
+var mail_image_requests = row.find('.mail_image_requests');
+
+// console.log(mail_image_requests);
+
+var mir = $('<%= j render partial: "mail_image_requests/show", locals: {mail_image_request: @mail_image_request} %>');
+
+mir.hide();
+mail_image_requests.append(mir);
+
+mir.show(350);

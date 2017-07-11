@@ -19,6 +19,7 @@
 //= require farm_shed/all.js
 //= require mail_queue_builder
 //= require mail_queuer
+//= require mail_queue_popovers
 
 function initClientForm(){
   // BootstrapRailsForm is a custom function defined in farm_shed

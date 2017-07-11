@@ -14,7 +14,7 @@
     <div class="row body_row">
       <div class="col-xs-4">
         <ul>
-          <li><%= c.name %></li>
+          <li><%= link_to c.name, c %></li>
           <li><%= mail_to c.email %></li>
           <% unless c.phone.blank? %>
           <li><%= link_to c.phone, "tel:#{c.phone}" %></li>
@@ -37,7 +37,7 @@
               <div class="col-xs-6">
                 <%= link_to '#', class: 'image_popover_control click_control',
                 data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
-                <%= image_tag mi.thumb %>
+                  <%= image_tag mi.thumb %>
                 <% end %>
               </div><!-- inner col -->
               <div class="col-xs-6">
