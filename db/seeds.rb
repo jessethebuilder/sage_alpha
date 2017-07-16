@@ -3,7 +3,7 @@ include FarmShed
 # --- Users -----------------------
 User.destroy_all
 
-User.create! email: 'jesse@anysoft.us', admin: true, password: 'password'
+User.create! email: 'test@test.com', admin: true, password: 'password'
 
 #--- Clients ------------------
 Client.destroy_all
