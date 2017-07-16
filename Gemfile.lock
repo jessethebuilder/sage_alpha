@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/jessethebuilder/farm_shed
-  revision: 7fa0ef67aa1bac6f55d9b802839ed1a06d522f7f
+  revision: a21f58b24a26d476e1fa25937400baccd1633c3a
   branch: lite
   specs:
     farm_shed (0.0.3)
