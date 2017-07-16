@@ -1,7 +1,7 @@
 # require 'resque/server'
 Rails.application.routes.draw do
   resources :mail_image_requests
-  # mount Resque::Server.new, at: '/resque'
+
 
   resources :comments
 
@@ -24,6 +24,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # devise_for :users has to be above resources :users
+  devise_for :users
+  
   resources :users, only: [:index, :destroy, :create] do
     member do
       get 'promote'
@@ -37,6 +40,5 @@ Rails.application.routes.draw do
 
   resource :client_keyword_matches, only: [:create]
 
-  devise_for :users
   root to: "users#unknown"
 end

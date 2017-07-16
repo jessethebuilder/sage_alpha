@@ -44,7 +44,9 @@ class UsersController < ApplicationController
       if current_user.admin?
         redirect_to mail_queues_path
       else
-        redirect_to client_path(current_user.client)
+        puts '............'
+        puts current_user.client.to_param
+        redirect_to client_path(current_user.client.to_param  )
       end
     else
       redirect_to new_user_session_path

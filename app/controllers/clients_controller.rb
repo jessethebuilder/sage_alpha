@@ -1,7 +1,7 @@
 class ClientsController < ApplicationController
   include FarmShed
-  before_action :authenticate_admin!, except: [:edit, :update]
-  before_action :authenticate_user!, only: [:edit, :update]
+  before_action :authenticate_admin!, except: [:edit, :update, :show]
+  before_action :authenticate_user!, only: [:edit, :update, :show]
   before_action :set_client, only: [:show, :edit, :update, :destroy, :custom_mail_queue]
 
   def custom_mail_queue
@@ -40,6 +40,7 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
+        pw = random_password
         ClientMailer.after_sign_up(@client, pw).deliver_now
         format.html { redirect_to clients_path, notice: "Client: #{@client.email} was sucessfully created." }
         # format.json { render :show, status: :created, location: @client }

@@ -12,16 +12,16 @@
   <% @clients.each do |c| %>
     <div class="row client">
       <div class="col-xs-4">
-        <ul>
+        <ul class="bulletless">
           <li><%= link_to c.name, c %></li>
           <li><%= mail_to c.email %></li>
           <% unless c.phone.blank? %>
           <li><%= link_to c.phone, "tel:#{c.phone}" %></li>
           <% end %>
           <% unless c.company_name.blank? %>
-          <li>Company: <%= c.company_name  %></li>
+          <li>Company: <strong><%= c.company_name %></strong></li>
           <% end %>
-          <li>
+          <li>Keywords:
             <strong>
               <%= c.keywords.join(', ') %>
             </strong>

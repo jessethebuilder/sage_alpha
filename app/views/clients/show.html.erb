@@ -1,11 +1,16 @@
+<div class="container logo_banner">
+  <%= image_tag 'logo.png', width: '33%' %>
+</div>
 <div id="client">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <%= quick_options ['Edit', edit_client_path(@client)] %>
+  <% if user_is_admin? %>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <%= quick_options ['Edit', edit_client_path(@client)] %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="container">
     <div class="row">
