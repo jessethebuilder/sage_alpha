@@ -5,7 +5,7 @@ class MailQueuesController < ApplicationController
 
   def send_emails
     @mail_queue.send_emails
-    redirect_to mail_queue_path(@mail_queue), notice: "#{@mail_queue.clients.count} email/s sent."
+    redirect_to mail_queue_path(@mail_queue), notice: "#{@mail_queue.sent_emails.count} email/s sent."
   end
 
   # GET /mail_queues

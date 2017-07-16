@@ -1,46 +1,46 @@
-function MailImageRequestCompleter(){
-  this.init = function(){
-    var checkboxes = $('.complete_checkbox');
-    checkboxes.change(function(e){
-      var cb = $(this);
-      var complete = cb.is(':checked');
-      var cell = cb.closest('td');
-      var row = cb.closest('tr');
-      var cells = row.find('td');
+function MailImageRequestUpdater(mail_image_request){
+  this.row = $(mail_image_request);
+  this.request_id = this.row.data('mail-image-request-id');
+  this.tracking_id_input = this.row.find('input[name="tracking_id"]');
+  this.complete_checkbox = this.row.find('.complete_checkbox');
+  this.completed_at_cell = this.row.find('.completed_at');
 
-      var row = cb.closest('.mail_image_request_row');
-      var id = row.data('mail-image-request-id');
+  this.isComplete = function(){
+    return this.complete_checkbox.is(':checked');
+  }
 
-      var tracking_id = row.find('input[name="tracking_id"]').val();
-
-      $.ajax({
-        url: '/mail_image_requests/' + id,
-        method: 'PATCH',
-        data: {
-          mail_image_request: {
-            complete: complete,
-            tracking_id: tracking_id
-          },
+  this.update = function(element){
+    var t = this;
+    $.ajax({
+      url: '/mail_image_requests/' + t.request_id,
+      method: 'PATCH',
+      data: {
+        mail_image_request: {
+          complete: t.isComplete(),
+          tracking_id: t.tracking_id_input.val()
         },
-        dataType: 'json',
-        format: 'json',
-        complete: function(data){
-          var json = JSON.parse(data.responseText);
-          // var id = json.id.$oid;
-          var cell_index;
-          $.each(cells, function(i, c){
-            if(c == cell[0]){ cell_index = i; }
-          });
-
-          var time_cell = $(cells[cell_index + 1]);
-          var time = json.completed_at;
-          if(time == null){
-            time_cell.text('');
-          } else {
-            time_cell.text(json.formatted_completed_at);
-          }
-        }
-      });
+      },
+      dataType: 'json',
+      format: 'json',
+      complete: function(data){
+        var json = JSON.parse(data.responseText);
+        var completed_at = json.completed_at ? json.formatted_completed_at : '';
+        var time = $('<span>' + completed_at + '</span>');
+        t.completed_at_cell.html(time);
+      }
     });
   }
+
+  this.init = function(){
+    var t = this;
+
+    this.complete_checkbox.change(function(e){
+      t.update($(this));
+    });
+
+    this.tracking_id_input.change(function(e){
+      t.update($(this));
+    });
+  }
+
 }

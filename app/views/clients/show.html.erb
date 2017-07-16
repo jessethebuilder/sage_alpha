@@ -46,38 +46,40 @@
 
               </div>
               <div class="col-xs-3">
-                <div class="controls">
-                  <div class="form-group">
-                    <%= link_to 'Request Forward',
-                                 mail_image_requests_path(mail_image_request: {
-                                                            type: 'forward',
+                <% if mi.is_requestable_for?(@client) %>
+                  <div class="controls">
+                    <div class="form-group">
+                      <%= link_to 'Request Forward',
+                                   mail_image_requests_path(mail_image_request: {
+                                                              type: 'forward',
+                                                              client_id: @client.to_param,
+                                                              mail_image_id: mi.to_param
+                                                            }),
+                                   method: :post,
+                                   class: 'btn btn-primary btn-sm', remote: true %>
+                    </div>
+                    <div class="form-group">
+                      <%= link_to 'Request Scan',
+                                  mail_image_requests_path(mail_image_request: {
+                                                              type: 'scan',
+                                                              client_id: @client.to_param,
+                                                              mail_image_id: mi.to_param
+                                                          }),
+                                  method: :post,
+                                  class: 'btn btn-warning btn-sm', remote: true %>
+                    </div>
+                    <div class="form-group">
+                      <%= link_to 'Request Disposal',
+                                  mail_image_requests_path(mail_image_request: {
+                                                            type: 'disposal',
                                                             client_id: @client.to_param,
                                                             mail_image_id: mi.to_param
                                                           }),
-                                 method: :post,
-                                 class: 'btn btn-primary btn-sm', remote: true %>
+                                  method: :post,
+                                  class: 'btn btn-danger btn-sm', remote: true %>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <%= link_to 'Request Scan',
-                                mail_image_requests_path(mail_image_request: {
-                                                            type: 'scan',
-                                                            client_id: @client.to_param,
-                                                            mail_image_id: mi.to_param
-                                                        }),
-                                method: :post,
-                                class: 'btn btn-warning btn-sm', remote: true %>
-                  </div>
-                  <div class="form-group">
-                    <%= link_to 'Request Disposal',
-                                mail_image_requests_path(mail_image_request: {
-                                                          type: 'disposal',
-                                                          client_id: @client.to_param,
-                                                          mail_image_id: mi.to_param
-                                                        }),
-                                method: :post,
-                                class: 'btn btn-danger btn-sm', remote: true %>
-                  </div>
-                </div>
+                <% end %>
               </div>
               <div class="col-xs-6">
                 <div class="mail_image_requests">

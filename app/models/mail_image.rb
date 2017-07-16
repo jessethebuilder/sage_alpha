@@ -25,6 +25,18 @@ class MailImage
     self.client_keyword_matches.map{ |ckm| ckm.client }.uniq
   end
 
+  def is_requestable_for?(client)
+    client.mail_image_requests.each do |mir|
+      if mir.mail_image == self
+        if (mir.type == 'disposal' || mir.type == 'forward') && mir.complete?
+          return false
+        end
+      end
+    end
+
+    return true
+  end
+
   def match_to_clients
     # Creates ClientKeywordMatches
     Client.all.each do |c|

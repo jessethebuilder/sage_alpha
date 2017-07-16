@@ -24,10 +24,12 @@ class MailImageRequest
   private
 
   def set_completed_at
-    if self.complete?
-      self.completed_at = Time.now
-    else
-      self.completed_at = nil
+    if complete_changed?
+      if self.complete?
+        self.completed_at = Time.now
+      else
+        self.completed_at = nil
+      end
     end
   end
 

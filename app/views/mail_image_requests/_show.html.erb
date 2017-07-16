@@ -2,7 +2,7 @@
   <div class="col-xs-6">
     <%= mail_image_request.type.titlecase %>
     <span class="date">
-      <%= mail_image_request.created_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) %>
+      <%= D.new(mail_image_request.created_at).datetime_with_zone %>      
     </span>
   </div>
   <div class="col-xs-6">
@@ -11,7 +11,7 @@
         &nbsp;&nbsp;&nbsp;
         Completed
         <span class="date">
-          <%= mail_image_request.completed_at.strftime( ENV['DATETIME_DISPLAY_FORMATTER']) %>
+          <%= D.new(mail_image_request.completed_at).datetime_with_zone %>
         </span>
           <% unless mail_image_request.tracking_id.blank? %>
             <div style="font-size:16px; padding-left: 30px;">

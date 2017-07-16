@@ -53,6 +53,8 @@
 
 .mail_images{
     // position: relative;
+    padding-top: 10px;
+    padding-bottom: 5px;
 
   .col:first-child .mail_image{
     // border-left-width: 0px;
@@ -94,4 +96,9 @@
   //   border-left-width: 0px;
   // }
 
+}
+
+
+.mail_images:first-child{
+  padding-top: 0px;
 }

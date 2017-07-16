@@ -30,11 +30,10 @@ class Client
 
   has_many :mail_queues
 
-  def send_email(content_array)
-    # content_array is an Array of Hashes with 2 keys: :image, :keyword
-    ImageMailer.notify_client_of_keyword_matches(self, content_array).deliver_now
-    # ImageMailer.notify_client_of_keyword_matches(self, content_array).deliver
+  def send_email(images)
+    ImageMailer.notify_client_of_keyword_matches(self, images).deliver_now
     puts "Email sent to #{self.name} at #{Time.now.strftime('%D %r')}."
+    true
   end
 
   def keywords=(words)

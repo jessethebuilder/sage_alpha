@@ -25,6 +25,8 @@ module MongoBase
     #  config.active_job.queue_adapter = :sucker_punch
     #  config.active_job.queue_adapter = :sidekiq
     #  config.active_job.queue_adapter = :resque
+
+    config.time_zone = 'Eastern Time (US & Canada)'
   end
 end
 

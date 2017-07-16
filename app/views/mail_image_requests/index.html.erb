@@ -23,7 +23,7 @@
             <% @mail_image_requests.each do |mir|
                  mi = mir.mail_image
                  c = mir.client %>
-              <%= content_tag :tr, class: 'mail_image_request_row',
+              <%= content_tag :tr, class: 'mail_image_request',
                               data: {'mail-image-request-id' => mir.to_param} do %>
                 <td>
                   <div class="date">
@@ -62,8 +62,9 @@
                     </label>
                   <!-- </div> -->
                 </td>
-                <td class="date" style="width:155px">
+                <td class="date completed_at" style="width:155px">
                   <%= mir.completed_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) if mir.completed_at %>
+                  <%#= D.new(mir.completed_at).time_with_zone if mir.completed_at %>
                 </td>
               <% end # tr %>
             <% end # each mail_image_request %>
@@ -83,7 +84,10 @@
     var mqp = new MailQueuePopovers();
     mqp.init();
 
-    var mirc = new MailImageRequestCompleter();
-    mirc.init();
+    $('.mail_image_request').each(function(i, mi){
+      var mirc = new MailImageRequestUpdater(mi);
+      mirc.init();
+    });
+
   });
 </script>

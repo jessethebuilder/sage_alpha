@@ -23,10 +23,10 @@
                 <%= link_to mq.name, mq %>
               </td>
               <td>
-                <%= mq.emails_complete %>
+                <%= mq.complete %>
               </td>
               <td>
-                <%= mq.sent_emails_count %>
+                <%= mq.sent_emails.count %>
               </td>
               <td>
                 <%= link_to 'Delete', mail_queue_path(mq),

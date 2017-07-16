@@ -62,7 +62,7 @@
 <script>
 function normalizeMailImageHeights(){
   $('.mail_images').each(function(i, row){
-    var h = $(row).height();
+    var h = $(row).height() + 10;
     $(row).find('.mail_image').css('height', h + 'px');
   });
 }
