@@ -11,8 +11,10 @@ GIT
   specs:
     farm_ruby (0.1.0)
 
-PATH
-  remote: /var/www/my_gems/farm_shed
+GIT
+  remote: https://github.com/jessethebuilder/farm_shed
+  revision: 7fa0ef67aa1bac6f55d9b802839ed1a06d522f7f
+  branch: lite
   specs:
     farm_shed (0.0.3)
       rails
