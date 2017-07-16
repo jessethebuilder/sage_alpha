@@ -1,46 +1,63 @@
-.mail_queue{
-  .mail_image{
+// .mail_queue{
+//   .mail_image{
+//     padding-top: 10px;
+//     padding-bottom: 10px;
+//
+//     img{
+//       width: 40%;
+//     }
+//   }
+//
+//   .mail_image:nth-child(even){
+//     background-color: #ccc;
+//   }
+// }
+
+// #mail_image_selection{
+//   padding: 20px;
+//   background-color: #dddddd;
+//
+//
+//   .client{
+//     font-size: 24px;
+//     padding:5px;
+//     margin-bottom: 10px;
+//     text-align: center;
+//     background-color: #333;
+//     color: white;
+//   }
+//
+//   .client.active{
+//     color: black;
+//     background-color: white;
+//   }
+//
+//   .mail_image{
+//     z-index: 50;
+//     width: 50px;
+//     margin-bottom: 10px;
+//     padding-bottom: 10px;
+//   }
+// }
+
+  // height: 100%;
+#mail_queue_table{
+  .client{
     padding-top: 10px;
-    padding-bottom: 10px;
-
-    img{
-      width: 40%;
-    }
+    margin-bottom: 10px;
   }
-
-  .mail_image:nth-child(even){
+  .client:nth-child(odd){
     background-color: #ccc;
   }
 }
 
-#mail_image_selection{
-  padding: 20px;
-  background-color: #dddddd;
+.mail_images{
+    // position: relative;
 
-
-  .client{
-    font-size: 24px;
-    padding:5px;
-    margin-bottom: 10px;
-    text-align: center;
-    background-color: #333;
-    color: white;
+  .col:first-child .mail_image{
+    // border-left-width: 0px;
   }
 
-  .client.active{
-    color: black;
-    background-color: white;
-  }
-
-  .mail_image{
-    z-index: 50;
-    width: 50px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-  }
-}
-
-#mail_queue_table{
   ul{
     padding-left: 0px;
     li{
@@ -51,19 +68,30 @@
   .body_row{
     border-bottom: 1px solid #ccc;
     padding-top: 10px;
+
   }
 
-  // table.inner{
-  //   margin: 0px;
-  //
-  //
-  //   td{
-  //     padding: 4px;
-  //     border-width: 0px;
-  //   }
+  .mail_image{
+    padding-top: 6px;
+
+    text-align: center;
+    border-left: 1px solid $text_color_1;
+
+    .image_link{
+
+    }
+
+    .text_link{
+      margin-top: 8px;
+
+      a{
+        font-size: 12px;
+      }
+    }
+  }
+
+  // .mail_image_row .mail_image:first-child{
+  //   border-left-width: 0px;
   // }
-  //
-  // table.inner:nth-child(odd){
-  //   // background-color: #ddd;
-  // }
+
 }

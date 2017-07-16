@@ -1,0 +1,36 @@
+asdf<table id="client_table" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Company</th>
+      <th>Clilent #</th>
+      <th>Keywords</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% clients.each do |c| %>
+      <tr>
+        <td><%= c.name %></td>
+        <td><%= c.email %></td>
+        <td><%= c.phone %></td>
+        <td><%= c.company_name %></td>
+        <td><%= c.client_number %></td>
+        <td><%= c.display_keywords %></td>
+        <td><%= link_to 'View', client_path(c), class: 'btn btn-primary btn-sm' %></td>
+        <td><%= link_to 'Edit', edit_client_path(c), class: 'btn btn-warning btn-sm' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function(){
+    var st = new SortableTable('#client_table');
+    st.init();
+  });
+</script>

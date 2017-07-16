@@ -60,13 +60,18 @@ class MailImageRequestsController < ApplicationController
   # DELETE /mail_image_requests/1
   # DELETE /mail_image_requests/1.json
   def destroy
-    @destroyed_id = @mail_image_request.to_param
-
-    @mail_image_request.destroy
     respond_to do |format|
-      format.html { redirect_to mail_image_requests_url, notice: 'Mail image request was successfully destroyed.' }
-      format.json { head :no_content }
-      format.js
+      if @mail_image_request.complete?
+        # Do not destroy if compelete. Instead send an error alert to user, and
+        # treat as Update
+        d = D.new(@mail_image_request.completed_at).datetime_with_zone
+        @alert = "Your request has already been fulfilled. At #{d}."
+        format.js{ render :update }
+      else
+        @destroyed_id = @mail_image_request.to_param
+        @mail_image_request.destroy
+        format.js
+      end
     end
   end
 
@@ -78,7 +83,7 @@ class MailImageRequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mail_image_request_params
-      params.require(:mail_image_request).permit(:type, :complete, :completed_at,
+      params.require(:mail_image_request).permit(:type, :complete, :tracking_id,
                                                  :mail_image_id, :client_id)
     end
 end

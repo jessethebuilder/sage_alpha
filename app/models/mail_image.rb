@@ -5,12 +5,13 @@ class MailImage
   # mail_queue_id is used to pass embedding mail_queue through controller
 
   field :text, type: String
+
   field :image, type: String
+  validates :image, presence: true
+
   field :thumb, type: String
 
-  # field :client_keyword_matches, type: Array, default: []
-
-  has_and_belongs_to_many :clients
+  # has_and_belongs_to_many :clients
 
   belongs_to :mail_queue
 
@@ -20,10 +21,12 @@ class MailImage
 
   has_many :mail_image_requests
 
+  def clients
+    self.client_keyword_matches.map{ |ckm| ckm.client }.uniq
+  end
+
   def match_to_clients
-    # Checks each Client for a keyword match with this MailImage. If a match
-    # exists, create a hash and add to this MailImages :client_keyword_matches attr.
-    # This will be used to determine who to send emails to.
+    # Creates ClientKeywordMatches
     Client.all.each do |c|
       c.keywords.each do |k|
         if /#{k}/i =~ self.text
@@ -31,8 +34,6 @@ class MailImage
           ckm.client = c
           ckm.mail_image = self
           ckm.save!
-
-          c.mail_images << self
         end
       end
     end

@@ -16,8 +16,13 @@ class ClientsController < ApplicationController
 
   # GET /clients/1
   # GET /clients/1.json
-  # def show
-  # end
+  def show
+    # jfx
+    # uncomplete
+    # render
+    # complete
+  end
+
 
   # GET /clients/new
   def new
@@ -77,6 +82,6 @@ class ClientsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def client_params
-      params.require(:client).permit(:email, :keywords, :first_name, :last_name, :company_name, :phone, :client_number)
+      params.require(:client).permit(:email, :keywords, :name, :company_name, :phone, :client_number)
     end
 end

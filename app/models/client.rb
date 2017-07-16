@@ -1,11 +1,10 @@
 class Client
   include Mongoid::Document
   include Mongoid::Timestamps
+  include FarmShed
 
-  field :first_name, type: String
-  validates :first_name, presence: true
-
-  field :last_name, type: String
+  field :name, type: String
+  validates :name, presence: true
 
   field :email, type: String
   validates :email, presence: true, uniqueness: true
@@ -19,22 +18,16 @@ class Client
 
   field :client_number, type: String
 
-  has_many :client_keyword_matches
+  has_many :client_keyword_matches, dependent: :destroy
 
-  has_many :mail_image_requests
-
-  def name
-    n = self.first_name
-    n += " #{self.last_name}" unless self.last_name.blank?
-    n
-  end
-  # has_many :mail_images
+  has_many :mail_image_requests, dependent: :destroy
 
   # :user is only optional, so Client can be created. The after_create action below
   # always creates a User for this client when Client is created
-  belongs_to :user, dependent: :destroy, optional: true
+  belongs_to :user, optional: true, dependent: :destroy
 
-  has_and_belongs_to_many :mail_images
+  # has_and_belongs_to_many :mail_images
+
   has_many :mail_queues
 
   def send_email(content_array)
@@ -58,7 +51,12 @@ class Client
     self.keywords.join(', ')
   end
 
+  def mail_images
+    client_keyword_matches.map{ |ckm| ckm.mail_image }.uniq
+  end
+
   after_create :create_user
+  after_save :update_user
 
   private
 
@@ -68,5 +66,13 @@ class Client
     self.user = u
     self.save
     u.save
+  end
+
+  def update_user
+    if email_changed?
+      u = self.user
+      u.email = self.email
+      u.save
+    end
   end
 end

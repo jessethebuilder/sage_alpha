@@ -30,7 +30,7 @@ class User
 
   scope :clientless, -> do
     # Clientless is used to determine which Users are not generated from creating
-    # a Client. Essentially, admins, at this point. 
+    # a Client. Essentially, admins, at this point.
     clients = Client.where(:user_id.exists => true)
     ids = clients.map{ |c| c.user_id }
     User.not_in(_id: ids)

@@ -20,11 +20,21 @@
       </div>
     </div><!-- row -->
 
-    <% @client.mail_images.order(updated_at: :desc).group_by{ |mi| mi.created_at.to_date }.each do |date, mi_group| %>
+    <% @client.mail_images.sort{ |a, b| b.created_at <=> a.created_at }.group_by{ |mi| mi.created_at.to_date }.each do |date, mi_group| %>
       <div class="row">
         <div class="col-xs-12">
           <h2 class="text-center" style="margin-bottom:30px;"><%= date.strftime('%B %e, %Y') %></h2>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="instructions">Click image to view</div>
+        </div>
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6"></div>
+      </div>
+      <div class="row">
         <div class="mail_image_list">
           <% mi_group.each do |mi| %>
             <%= content_tag :div, class: 'row mail_image_row', id: "mail_image_row_#{mi.to_param}" do %>

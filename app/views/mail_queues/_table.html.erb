@@ -9,9 +9,8 @@
     <div class="col-xs-4">
     </div>
   </div>
-
   <% @clients.each do |c| %>
-    <div class="row body_row">
+    <div class="row client">
       <div class="col-xs-4">
         <ul>
           <li><%= link_to c.name, c %></li>
@@ -30,92 +29,45 @@
         </ul>
       </div><!-- outer col -->
 
-      <div class="col-xs-4">
-        <% @mail_queue.mail_images.each do |mi| %>
-          <% if c.mail_images.include?(mi) %>
-            <div class="row inner_row">
-              <div class="col-xs-6">
-                <%= link_to '#', class: 'image_popover_control click_control',
-                data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
-                  <%= image_tag mi.thumb %>
-                <% end %>
-              </div><!-- inner col -->
-              <div class="col-xs-6">
+      <div class="col-xs-8">
+        <% @mail_queue.mail_images_for(c).in_groups_of(4) do |mi_group| %>
+          <div class="row mail_images">
+            <% mi_group.each do |mi| %>
+              <div class="col-sm-3 col">
+                <% if mi %>
+                  <div class="mail_image">
+                    <div class="image_link">
+                      <%= link_to '#', class: 'image_popover_control click_control',
+                                  data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
+                          <%= image_tag mi.thumb %>
+                      <% end %>
+                    </div>
+                    <div class="text_link">
+                      <%= link_to 'text', '#',
+                                  class: 'text_popover_control click_control',
+                                  data: {'mail-image-id' => mi.to_param, 'text' => mi.text}  %>
 
-                <%= link_to '#', class: 'text_popover_control click_control',
-                                 data: {'mail-image-id' => mi.to_param, 'text' => mi.text} do %>
-                  <%= content_tag :ul do %>
-                    <% mi.client_keyword_matches.map{ |ckm| ckm.keyword }.uniq.each do |keyword| %>
-                      <li><%= keyword %></li>
-                    <% end %>
-                  <% end %>
-                <% end %>
+                    </div>
+                  </div>
+                <% end # if mail_image %>
               </div><!-- inner col -->
-            </div>
-          <% end %>
-        <% end # each mail_image %>
-      </div><!-- outer col -->
-
-      <div class="col-xs-4"></div><!-- outer col -->
+            <% end # mail_image %>
+          </div><!-- inner row -->
+        <% end # mail_image Groups %>
+      </div>
     </div>
-
-
-      </td>
-    </tr>
   <% end # each client %>
 </div>
 
-<!-- <table id="mail_queue_table" class="table">
-  <thead>
-    <tr>
-      <th>Client</th>
-      <th>Images</th>
+<script>
+function normalizeMailImageHeights(){
+  $('.mail_images').each(function(i, row){
+    var h = $(row).height();
+    $(row).find('.mail_image').css('height', h + 'px');
+  });
+}
 
-  <% @clients.each do |c| %>
-    <tr>
-      <td>
-        <ul>
-          <li><%= c.name %></li>
-          <li><%= mail_to c.email %></li>
-          <% unless c.phone.blank? %>
-          <li><%= link_to c.phone, "tel:#{c.phone}" %></li>
-          <% end %>
-          <% unless c.company_name.blank? %>
-          <li>Company: <%= c.company_name  %></li>
-          <% end %>
-          <li>
-            <strong>
-              <%= c.keywords.join(', ') %>
-            </strong>
-          </li>
-        </ul>
-      </td>
-
-      <td>
-        <% @mail_queue.mail_images.each do |mi| %>
-          <% if c.mail_images.include?(mi) %>
-            <table class="table inner">
-              <tbody>
-                <tr>
-                  <td>
-                    <%= content_tag :div, class: 'image_popover_control',
-                                    data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
-                      <%= image_tag mi.thumb %>
-                    <% end %>
-                  </td>
-                  <td>
-                    <ul>
-                      <% mi.client_keyword_matches.map{ |ckm| ckm.keyword }.uniq.each do |keyword| %>
-                        <li><%= keyword %></li>
-                      <% end %>
-                    </ul>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          <% end %>
-        <% end # each mail_image %>
-      </td>
-    </tr>
-  <% end # each client %>
-</table> -->
+$(document).ready(function(){
+  normalizeMailImageHeights();
+});
+</script>

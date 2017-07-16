@@ -1,0 +1,47 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="client_select">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-bottom:10px;"><span aria-hidden="true">&times;</span></button>
+        <h1 class="modal-title" style="margin-top:20px;">Select a Client</h1>
+      </div>
+      <div class="modal-body">
+        <table id="client_table" class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Company</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% clients.each do |c| %>
+              <%= content_tag :tr, data: {'client-id' => c.to_param}, class: 'client' do %>
+                <td><%= c.name %></td>
+                <td><%= c.email %></td>
+                <td><%= c.company_name %></td>
+                <td>
+                  <%= link_to 'Match', '#', class: 'create_match_link btn btn-primary btn-sm' %>
+                </td>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var st = new SortableTable('#client_table');
+    st.init();
+
+    $('#client_select').on('hide.bs.modal', function(){
+      $('.image_for_client_select').detach();
+    });
+  });
+</script>

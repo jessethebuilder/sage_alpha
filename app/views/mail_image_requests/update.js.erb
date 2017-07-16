@@ -1,0 +1,21 @@
+
+<% if @alert %>
+alert('<%= @alert %>');
+<% end %>
+
+
+
+var mail_image_request = $('#mail_image_request_<%= j @mail_image_request.to_param %>');
+
+var mir = $('<%= j render partial: "mail_image_requests/show", locals: {mail_image_request: @mail_image_request} %>');
+
+mir.css('opacity', 0.0);
+
+mail_image_request.replaceWith(mir);
+
+mir.animate({
+  opacity: 1.0
+}, 350);
+
+// mir.hide()
+// mir.show(350)

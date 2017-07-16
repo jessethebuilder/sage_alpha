@@ -7,11 +7,13 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Created at</th>
               <th>Image</th>
               <th>Client</th>
               <th>Client Email</th>
               <th>Client Phone</th>
               <th>Type</th>
+              <th>Tracking Number</th>
               <th>Complete</th>
               <th>Completed at</th>
             </tr>
@@ -23,6 +25,11 @@
                  c = mir.client %>
               <%= content_tag :tr, class: 'mail_image_request_row',
                               data: {'mail-image-request-id' => mir.to_param} do %>
+                <td>
+                  <div class="date">
+                    <%= mir.created_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) %>
+                  </div>
+                </td>
                 <td>
                   <%= link_to '#', class: 'image_popover_control click_control',
                               data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
@@ -42,6 +49,11 @@
                   <strong><%= mir.type.titlecase %></strong>
                 </td>
                 <td>
+                  <% if mir.type == 'forward' %>
+                    <%= text_field_tag 'tracking_id', mir.tracking_id, class: 'form-control' %>
+                  <% end %>
+                </td>
+                <td>
                   <!-- <div class="checkbox"> -->
                     <label style="padding-left: 20px;">
                       <%= check_box_tag "compelete_checkbox_#{mir.to_param}",
@@ -51,7 +63,7 @@
                   <!-- </div> -->
                 </td>
                 <td class="date" style="width:155px">
-                  <%= mir.completed_at.strftime('%B %e, %Y %l:%M%P') if mir.completed_at %>
+                  <%= mir.completed_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) if mir.completed_at %>
                 </td>
               <% end # tr %>
             <% end # each mail_image_request %>
@@ -61,55 +73,8 @@
   </div>
 </div>
 <script>
-  $(document).ready(function(){
-    var checkboxes = $('.complete_checkbox');
-    checkboxes.change(function(e){
-      var cb = $(this);
-      var complete = cb.is(':checked');
-      var cell = cb.closest('td');
-      var row = cb.closest('tr');
-      var cells = row.find('td');
 
-      var completed_at;
-      if(complete){
-        completed_at = new Date();
-      } else {
-        completed_at = '';
-      }
 
-      var row = cb.closest('.mail_image_request_row');
-      var id = row.data('mail-image-request-id');
-
-      $.ajax({
-        url: '/mail_image_requests/' + id,
-        method: 'PATCH',
-        data: {
-          mail_image_request: {
-            complete: complete,
-            completed_at: completed_at,
-          },
-        },
-        dataType: 'json',
-        format: 'json',
-        complete: function(data){
-          var json = JSON.parse(data.responseText);
-          // var id = json.id.$oid;
-          var cell_index;
-          $.each(cells, function(i, c){
-            if(c == cell[0]){ cell_index = i; }
-          });
-
-          var time_cell = $(cells[cell_index + 1]);
-          var time = json.completed_at;
-          if(time == null){
-            time_cell.text('');
-          } else {
-            time_cell.text(json.formatted_completed_at);
-          }
-        }
-      });
-    });
-  });
 </script>
 
 
@@ -117,5 +82,8 @@
   $(document).ready(function(){
     var mqp = new MailQueuePopovers();
     mqp.init();
+
+    var mirc = new MailImageRequestCompleter();
+    mirc.init();
   });
 </script>

@@ -1,6 +1,6 @@
 class ClientKeywordMatchesController < ApplicationController
   before_action :authenticate_admin!
-  
+
   def create
     @client_keyword_match = ClientKeywordMatch.new(client_keyword_match_params)
     @client_keyword_match.client = Client.find(client_keyword_match_params[:client_id])
@@ -12,16 +12,17 @@ class ClientKeywordMatchesController < ApplicationController
       if(@client_keyword_match.save!)
         # Directly copied from mail_queues#show. Perehaps all of this code would be better
         # in a mail_queues_controller
-        @mail_queue = @client_keyword_match.mail_image.mail_queue
-        @clients = []
-        @mail_queue.mail_images.each do |mi|
-          mi.clients.each do |c|
-            @clients << c
-          end
-        end
-        @clients.uniq!
+        # @mail_queue = @client_keyword_match.mail_image.mail_queue
+        # @clients = []
+        # @mail_queue.mail_images.each do |mi|
+        #   mi.clients.each do |c|
+        #     @clients << c
+        #   end
+        # end
+        # @clients.uniq!
 
-        format.js
+        # format.js
+        format.json{ render json: {client_id: @client_keyword_match.client.to_param} }
         # format.js{ redirect_to mail_queue_path(@client_keyword_match.mail_image.mail_queue) }
         # format.json {render json: {status: 'success',
         #                            id: @client_keyword_match.to_param}}

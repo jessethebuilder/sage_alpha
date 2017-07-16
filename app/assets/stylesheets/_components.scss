@@ -55,6 +55,29 @@
 }
 
 .date{
-  font-size: 12px;
+  font-size: 10px;
   color: $text_color_3;
+  white-space: nowrap;
+}
+
+.date_stampped{
+  white-space: nowrap;
+}
+
+.instructions{
+  font-size: 20px;
+  font-color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+//--- Popovers
+
+//--- Modals ---------------------------------
+.modal{
+  height: 90%;
+  // y-overflow: scroll;
+  .close{
+    font-size: 40px;
+  }
 }

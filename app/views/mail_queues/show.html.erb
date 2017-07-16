@@ -1,5 +1,7 @@
+<div id="popover_anchor"></div>
+
 <div id="mail_queue">
-  <% unless @mail_queue.emails_complete %>
+  <!-- <% unless @mail_queue.emails_complete %>
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
@@ -9,7 +11,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   <% end %>
 
   <%= page_heading "Mail Queue <small>#{@mail_queue.name}</small>".html_safe %>
@@ -22,47 +24,55 @@
     </div>
   </div><!-- cont -->
 
-  <div id="mail_image_selection" class="container">
-    <div class="row">
-      <div class="col-xs-6">
-        <% @mail_queue.mail_images.each do |mi| %>
-          <div class="row">
-            <div class="col-xs-4">
-              <ul class="controls">
-                <li>
-                  <%= link_to 'Image', '#', class: 'image_popover_control click_control',
-                              data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} %>
-                </li>
-                <li>
-                  <%= link_to 'Text', '#', class: 'text_popover_control click_control',
-                              data: {'mail-image-id' => mi.to_param, 'text' => mi.text} %>
-                </li>
-              </ul>
-            </div><!-- inner col -->
-            <div class="col-xs-8">
-              <%= content_tag :div, class: 'mail_image', data: {'client-ids' => mi.clients.map{ |c| c.id }.join(','),
-                                                                id: mi.to_param} do %>
-                <%= image_tag mi.thumb, class: 'thumb' %>
+  <div id="mail_image_selection" class="container well" style="padding-bottom:50px;">
+    <h2>All Mail Images</h2>
+    <% @mail_queue.mail_images.in_groups_of(6) do |mi_group| %>
+      <div class="row mail_images">
+        <% mi_group.each do |mi| %>
+          <div class="col-sm-2 col">
+            <% if mi %>
+              <%= content_tag :div, class: 'mail_image', data: {'mail-image-id' => mi.to_param,
+                                                                'image-url' => mi.image,
+                                                                'client-ids' => mi.clients.map{ |c| c.to_param }.join(',')} do %>
+                <div class="image_link">
+                  <%= link_to '#', class: 'image_popover_control click_control',
+                              data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
+                      <%= image_tag mi.thumb %>
+                  <% end %>
+                </div>
+                <div class="text_link">
+                  <%= link_to 'text', '#',
+                              class: 'text_popover_control click_control',
+                              data: {'mail-image-id' => mi.to_param, 'text' => mi.text}  %>
+                </div>
+
+                <div class="text_link">
+                  <%= link_to 'match to client', '#', class: 'select_client_link' %>
+                </div>
               <% end %>
-            </div><!-- inner col -->
-          </div><!-- inner row -->
-        <% end %>
-      </div><!-- outer col -->
-      <div class="col-xs-6">
-        <% Client.all.each do |c| %>
-          <%= content_tag :div, class: 'client', data: {'client-id' => c.to_param } do %>
-            <%= c.name %>
-          <% end %>
-        <% end %>
-      </div><!-- outer col -->
-    </div>
-  </div><!-- cont -->
+            <% end # if mail_image %>
+          </div><!-- inner col -->
+        <% end # mail_image %>
+      </div><!-- inner row -->
+    <% end %>
+  </div>
 </div>
 
+<%= render partial: 'mail_images/client_select', locals: {clients: Client.all} %>
+
 <script>
+
+  // function MailQueuer(){
+  //
+  // }
+
   $(document).ready(function(){
+    normalizeMailImageHeights();
+
     var mqp = new MailQueuePopovers();
     mqp.init();
+
+
 
     var mq = new MailQueuer();
     mq.init();

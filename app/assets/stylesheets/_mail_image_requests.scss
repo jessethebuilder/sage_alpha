@@ -1,0 +1,21 @@
+.mail_image_requests{
+  .mail_image_request{
+    padding-top: 10px;
+    @extend .date_stampped;
+    // min-height: 40px;
+
+  }
+
+  .mail_image_request:nth-child(even){
+    background-color: #ccc;
+  }
+}
+
+.status{
+
+  margin-bottom: 10px;
+
+  .btn{
+    margin-bottom: 0px !important;
+  }
+}

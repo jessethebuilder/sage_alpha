@@ -27,3 +27,6 @@ module MongoBase
     #  config.active_job.queue_adapter = :resque
   end
 end
+
+ENV['DATETIME_DISPLAY_FORMATTER'] = "%B %e, %Y %l:%M%P"
+ENV['DATE_DISPLAY_FORMATTER'] = "%B %e, %Y"

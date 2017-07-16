@@ -1,24 +1,23 @@
 // This script handles ClientKeywordMatch functionality at /mail_queues
-
-
 function MailQueuer(){
-  this.box = $('#mail_image_selection');
-  this.mail_images = this.box.find('.mail_image');
-  this.clients = this.box.find('.client');
+  // This is rather convoluted as a result of some chances in the project spec.
+  // It involves a modal at mail_images/_client_select
 
-  //--- End Constructor -----------------------------------------------
+  this.modal =  $('#client_select');
+  this.modal_header = this.modal.find('.modal-header');
+  this.client_table = this.modal.find('#client_table');
+  this.client_rows = this.client_table.find('.client');
+
+  this.box = $('#mail_image_selection');
+  this.select_client_links = $('.select_client_link');
+  this.create_match_links = $('.create_match_link');
 
   //--- Classes -------------------------------------------------
   function MailImage(element){
     this.element = element;
-    this.ids = $(this.element).data('client-ids').split(',');
-    this.id = $(this.element).data('id');
-
-    this.addClientIdToIds = function(client_id){
-      var a = this.ids;
-      a.push(client_id);
-      this.element.data('client-ids', a.join(','));
-    }
+    this.id = $(this.element).data('mail-image-id');
+    this.image_url = $(this.element).data('image-url');
+    this.client_ids = $(this.element).data('client-ids').split(',');
   }
 
   function Client(element){
@@ -29,20 +28,16 @@ function MailQueuer(){
   this.activateMailImage = function(element){
     var mi = new MailImage(element);
     this.active_mail_image = mi;
-    this.showAllClients();
-    this.hideNonMatchingClients();
   }
 
   this.deactivateMailImage = function(){
-    this.active_mail_image.element.css('top', '0').css('left', '0');
     this.active_mail_image = null;
-    this.showAllClients();
   }
 
   this.activateClient = function(element){
     var c = new Client(element);
     this.active_client = c;
-    c.element.addClass('active');
+    // c.element.addClass('active');
   }
 
   this.deactivateClient = function(){
@@ -50,85 +45,72 @@ function MailQueuer(){
     this.active_client = null;
   }
 
-  this.createClientKeywordMatch = function(element){
+  this.createClientKeywordMatch = function(){
     var t = this;
-    if(element[0] == this.active_client.element[0]){
-      // If the element dropped on is the same as the activated element.
-      $.ajax({
-        method: 'POST',
-        url: '/client_keyword_matches',
-        data: {
-          client_keyword_match:{
-            client_id: this.active_client.id,
-            mail_image_id: this.active_mail_image.id,
-            keyword: '**admin_action**'
-          }
-        },
-        complete: function(results){
-          t.active_mail_image.addClientIdToIds(t.active_client.id);
-          t.deactivateClient();
-          t.deactivateMailImage();
+
+    $.ajax({
+      method: 'POST',
+      url: '/client_keyword_matches',
+      data: {
+        client_keyword_match:{
+          client_id: this.active_client.id,
+          mail_image_id: this.active_mail_image.id,
+          keyword: '**admin_action**'
         }
-      });
-    }
+      },
+      complete: function(results){
+        var client_id = JSON.parse(results.responseText).client_id
+        t.hideClientSearch(client_id);
+      }
+    });
   }
 
-  //--- Functions ------------------------------------------------
-  this.initDragDrop = function(){
+  this.hideClientSearch = function(client_id){
     var t = this;
+    t.modal.modal('hide');
+    t.deactivateClient();
+    t.deactivateMailImage();
 
-    $.each(t.mail_images, function(i, mi){
-      $(mi).draggable({
-        start: function(e, ui){
-          ui.helper.data('dropped', false);
-          t.activateMailImage($(this));
-        },
-        stop: function(e, ui){
-          if(!ui.helper.data('dropped')){
-            t.deactivateMailImage();
-          }
-        },
-        drag: function(e, ui){
+    // jfx I would like to show changes above
+  }
+
+  this.showClientSearch = function(){
+    var t = this;
+    var header = this.modal_header;
+    var banner = $('<img src="' + this.active_mail_image.image_url + '" width="100%" class="image_for_client_select"/>');
+    banner.insertAfter(header.find('.close'));
+
+    this.client_rows.each(function(i, row){
+      $(row).show();
+      var client_id = $(this).data('client-id');
+
+      $.each(t.active_mail_image.client_ids, function(i, id){
+        if(client_id === id){
+          $(row).hide();
         }
       });
     });
 
-
-    $.each(t.clients, function(i, c){
-      $(c).droppable({
-        over: function(e, ui){
-          t.activateClient($(this));
-        },
-        out: function(e, ui){
-          t.deactivateClient();
-        },
-        drop: function(e, ui){
-          ui.helper.data('dropped', true);
-          t.createClientKeywordMatch($(e.target));
-        }
-      });
-    });
-  };
-
-  this.showAllClients = function(){
-    $.each(this.clients, function(i, mi){
-      $(mi).show();
-    });
-  };
-
-  this.hideNonMatchingClients = function(){
-    // Hides Clients that do not match MailImage.
-    var ids = this.active_mail_image.ids;
-
-    // for(var i = 0; i < this.clients.length; i++){
-
-      for(var i = 0; i < ids.length; i++){
-        $('[data-client-id="' + ids[i] + '"]').hide();
-      } // each id
-    // } // each client
+    this.modal.modal('show');
   }
 
   this.init = function(){
-    this.initDragDrop();
+    var t = this;
+
+    this.select_client_links.each(function(i, mi){
+      $(this).click(function(e){
+        e.preventDefault();
+        t.activateMailImage($(this).closest('.text_link').closest('.mail_image'));
+        t.showClientSearch();
+      });
+    });
+
+    this.create_match_links.each(function(i, link){
+      $(this).click(function(e){
+        e.preventDefault();
+        t.activateClient($(this).closest('.client'));
+        t.createClientKeywordMatch();
+      });
+    });
   }
 }
