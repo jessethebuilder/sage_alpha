@@ -1,5 +1,5 @@
 <div class="container logo_banner">
-  <%= image_tag 'logo.png', width: '33%' %>
+  <%= image_tag 'logo.png', width: '20%' %>
 </div>
 <div id="client">
   <% if user_is_admin? %>
@@ -45,7 +45,7 @@
             <%= content_tag :div, class: 'row mail_image_row', id: "mail_image_row_#{mi.to_param}" do %>
               <div class="col-xs-3">
                 <%= link_to '#', class: 'image_popover_control click_control',
-                data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
+                            data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
                 <%= image_tag mi.image, width: '100%', class: 'mail_image_image' %>
                 <% end %>
 
@@ -58,10 +58,11 @@
                                    mail_image_requests_path(mail_image_request: {
                                                               type: 'forward',
                                                               client_id: @client.to_param,
-                                                              mail_image_id: mi.to_param
+                                                              mail_image_id: mi.to_param,
+                                                              shipping_company: 'slug_for_shipping_company'
                                                             }),
                                    method: :post,
-                                   class: 'btn btn-primary btn-sm', remote: true %>
+                                   class: 'btn btn-primary btn-sm forward_request_link', remote: true %>
                     </div>
                     <div class="form-group">
                       <%= link_to 'Request Scan',
@@ -100,6 +101,65 @@
     <% end %>
   </div>
 </div>
+
+<script>
+
+  //--- Get #shipping_company for MailImageRequest --------------------------------------------
+  function completeForwardRequest(url, shipping_company, box){
+    $.ajax({
+      url: url.replace('slug_for_shipping_company', shipping_company),
+      method: 'POST',
+      dataType: 'script',
+      format: 'script',
+      complete: function(){
+        box.closest('.controls').detach();
+      }
+    });
+  }
+
+  function getOtherShippingCompanyToCompleteForwardRequest(url, box){
+    var input = $('<input name="other_shipping_company" class="form-control" placeholder="Name of other Company" />');
+    box.html(input);
+    input.change(function(e){
+      completeForwardRequest(url, $(this).val(), box);
+    });
+    input.select();
+  }
+
+  var forward_requests = $('.forward_request_link');
+  forward_requests.each(function(i, req){
+    $(this).on('click', function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      // Get relevant data from the link
+      var link = $(this);
+      var url = link.attr('href');
+      var box = link.closest('.form-group');
+
+      // Create a Select for possible mailing options
+      var select = $('<select name="shipping_company" class="form-control"></select>');
+      select.append('<option>Select a Shipping Option</option>')
+      var options = ['USPS', 'UPS', 'FedEx', 'Other'];
+      $.each(options, function(i, opt){
+        select.append('<option name="' + opt + '">' + opt + '</option>');
+      });
+
+      box.html(select);
+
+      select.change(function(e){
+        // On change, either send the request, or get the name of the 'Other' shipping co
+        var co = $(this).val();
+        if(co == 'Other'){
+          getOtherShippingCompanyToCompleteForwardRequest(url, box);
+        } else {
+          completeForwardRequest(url, co, box);
+        }
+
+      });
+    });
+  });
+</script>
 
 <script>
   $(document).ready(function(){

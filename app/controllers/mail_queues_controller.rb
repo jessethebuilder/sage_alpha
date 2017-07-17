@@ -4,8 +4,11 @@ class MailQueuesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :update]
 
   def send_emails
-    @mail_queue.send_emails
-    redirect_to mail_queue_path(@mail_queue), notice: "#{@mail_queue.sent_emails.count} email/s sent."
+    # Does not send. Merely markes emails to be sent. Send gets done in rake task (sage.rake)
+    @mail_queue.update_attribute(:marked_for_completion, true)
+    count = @mail_queue.clients.count
+    e = count == 1 ? 'email' : 'emails'
+    redirect_to mail_queue_path(@mail_queue), notice: "MailQueue marked #{count} #{e} to be sent."
   end
 
   # GET /mail_queues

@@ -2,7 +2,10 @@
   <div class="col-xs-6">
     <%= mail_image_request.type.titlecase %>
     <span class="date">
-      <%= D.new(mail_image_request.created_at).datetime_with_zone %>      
+      <%= D.new(mail_image_request.created_at).datetime_with_zone %>
+      <% if mail_image_request.type == 'forward' %>
+        via <%= mail_image_request.shipping_company %>
+      <% end %>
     </span>
   </div>
   <div class="col-xs-6">
@@ -19,11 +22,9 @@
             </div>
           <% end %>
       <% else %>
-        <!-- <div class="form-group"> -->
-          <%= link_to 'cancel', mail_image_request_path(mail_image_request),
-                      remote: true, method: :delete,
-                      class: 'btn btn-danger btn-sm cancel_button' %>
-        <!-- </div> -->
+        <%= link_to 'cancel', mail_image_request_path(mail_image_request),
+                    remote: true, method: :delete,
+                    class: 'btn btn-danger btn-sm cancel_button' %>
       <% end %>
     </div>
 </div>

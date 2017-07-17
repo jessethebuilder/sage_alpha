@@ -1,13 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe MailImageRequest, type: :model do
-  let(:mir){ create :mail_image_request }
+  let(:mir){ build :mail_image_request }
 
   describe 'Validations' do
     it{ should validate_presence_of :type }
     it{ should validate_inclusion_of(:type).in_array(MailImageRequest::TYPES) }
     it{ should validate_presence_of :client }
     it{ should validate_presence_of :mail_image }
+
+    it 'should not validate if type == "forward" and tracking_id == nil' do
+      mir.type = 'forward'
+      mir.valid?.should == false
+      mir.errors[:tracking_id].include?('cannot be blank if type is "Forward"').should == true
+    end
   end
 
   describe 'Associaions' do
@@ -15,7 +21,7 @@ RSpec.describe MailImageRequest, type: :model do
     it{ should belong_to :mail_image }
   end
 
-  describe 'Idioms' do 
+  describe 'Idioms' do
     describe "Complete" do
       specify '#complete should default as false' do
         mir.complete.should == false
@@ -34,7 +40,6 @@ RSpec.describe MailImageRequest, type: :model do
         mir.completed_at.should == nil
       end
     end
-
   end # Idioms
 
   describe 'Scopes' do

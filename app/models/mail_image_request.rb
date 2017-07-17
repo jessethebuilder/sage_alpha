@@ -3,6 +3,7 @@ class MailImageRequest
   include Mongoid::Timestamps
 
   TYPES = %w|forward scan disposal|
+  SHIPPING_COMPANIES = %w|USPS UPS FedEx Other|
 
   field :type, type: String
   validates :type, presence: true, inclusion: {in: TYPES}
@@ -11,7 +12,10 @@ class MailImageRequest
   field :completed_at, type: Time
 
   field :tracking_id, type: String
-  # validate :tracking_number_if_complete
+  validate :tracking_id_if_forward_and_complete
+
+  field :shipping_company, type: String
+  validate :shipping_company_if_forward
 
   belongs_to :client
 
@@ -33,7 +37,13 @@ class MailImageRequest
     end
   end
 
-  def tracking_number_if_complete
-    errors.add(:tracking_number, 'cannot be blank') if complete? && tracking_number.blank?
+  # These last two validations have not been properly spec'ed yet. jfx
+
+  def tracking_id_if_forward_and_complete
+    errors.add(:tracking_id, 'cannot be blank if type is "Forward"') if complete? && type == 'forward' && tracking_id.blank?
+  end
+
+  def shipping_company_if_forward
+    errors.add(:shipping_company, 'cannot be blank if type is "Forward"') if type == 'forward' && shipping_company.blank?
   end
 end

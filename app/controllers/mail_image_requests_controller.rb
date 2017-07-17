@@ -85,7 +85,7 @@ class MailImageRequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mail_image_request_params
-      params.require(:mail_image_request).permit(:type, :complete, :tracking_id,
+      params.require(:mail_image_request).permit(:type, :complete, :tracking_id, :shipping_company,
                                                  :mail_image_id, :client_id)
     end
 end
