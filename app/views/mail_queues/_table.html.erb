@@ -9,65 +9,15 @@
     <div class="col-xs-4">
     </div>
   </div>
-  <% @clients.each do |c| %>
-    <div class="row client">
-      <div class="col-xs-4">
-        <ul class="bulletless">
-          <li><%= link_to c.name, c %></li>
-          <li><%= mail_to c.email %></li>
-          <% unless c.phone.blank? %>
-          <li><%= link_to c.phone, "tel:#{c.phone}" %></li>
-          <% end %>
-          <% unless c.company_name.blank? %>
-          <li>Company: <strong><%= c.company_name %></strong></li>
-          <% end %>
-          <li>Keywords:
-            <strong>
-              <%= c.keywords.join(', ') %>
-            </strong>
-          </li>
-        </ul>
-      </div><!-- outer col -->
-
-      <div class="col-xs-8">
-        <% @mail_queue.mail_images_for(c).in_groups_of(4) do |mi_group| %>
-          <div class="row mail_images">
-            <% mi_group.each do |mi| %>
-              <div class="col-sm-3 col">
-                <% if mi %>
-                  <div class="mail_image">
-                    <div class="image_link">
-                      <%= link_to '#', class: 'image_popover_control click_control',
-                                  data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
-                          <%= image_tag mi.thumb %>
-                      <% end %>
-                    </div>
-                    <div class="text_link">
-                      <%= link_to 'text', '#',
-                                  class: 'text_popover_control click_control',
-                                  data: {'mail-image-id' => mi.to_param, 'text' => mi.text}  %>
-
-                    </div>
-                  </div>
-                <% end # if mail_image %>
-              </div><!-- inner col -->
-            <% end # mail_image %>
-          </div><!-- inner row -->
-        <% end # mail_image Groups %>
-      </div>
-    </div>
-  <% end # each client %>
+  <div class="client_rows">
+    <% @clients.each do |c| %>
+      <%= render partial: 'client_row', locals: {client: c} %>
+    <% end # each client %>
+  </div>
 </div>
 
 <script>
-function normalizeMailImageHeights(){
-  $('.mail_images').each(function(i, row){
-    var h = $(row).height() + 10;
-    $(row).find('.mail_image').css('height', h + 'px');
-  });
-}
 
 $(document).ready(function(){
-  normalizeMailImageHeights();
 });
 </script>

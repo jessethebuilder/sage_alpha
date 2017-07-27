@@ -1,0 +1,41 @@
+<div id="unmatched_images" class="container well" style="margin-top:50px;padding-bottom:50px;">
+  <h2>Unmatched Images</h2>
+  <% mail_queue.unmatched_mail_images.in_groups_of(6) do |mi_group| %>
+    <div class="row mail_images">
+      <% mi_group.each do |mi| %>
+        <div class="col-sm-2 col">
+          <% if mi %>
+            <%= content_tag :div, class: 'mail_image', data: {'mail-image-id' => mi.to_param,
+                                                              'image-url' => mi.image,
+                                                              'client-ids' => mi.clients.map{ |c| c.to_param }.join(',')} do %>
+              <div class="image_link">
+                <%= link_to '#', class: 'image_popover_control click_control',
+                            data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
+                    <%= image_tag mi.thumb %>
+                <% end %>
+              </div>
+              <div class="text_link">
+                <%= link_to 'text', '#',
+                            class: 'text_popover_control click_control',
+                            data: {'mail-image-id' => mi.to_param, 'text' => mi.text}  %>
+              </div>
+
+              <div class="text_link" style="margin-bottom:20px;">
+                <%= link_to 'match to client', '#', class: 'select_client_link' %>
+              </div>
+            <% end %>
+          <% end # if mail_image %>
+        </div><!-- inner col -->
+      <% end # mail_image %>
+    </div><!-- inner row -->
+  <% end %>
+  <script>
+    $(document).ready(function(){
+      var mqp = new MailQueuePopovers();
+      mqp.init();
+
+      var mq = new MailQueuer();
+      mq.init();
+    });
+  </script>
+</div>

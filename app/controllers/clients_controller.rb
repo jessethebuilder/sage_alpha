@@ -2,10 +2,20 @@ class ClientsController < ApplicationController
   include FarmShed
   before_action :authenticate_admin!, except: [:edit, :update, :show]
   before_action :authenticate_user!, only: [:edit, :update, :show]
-  before_action :set_client, only: [:show, :edit, :update, :destroy, :custom_mail_queue]
+  before_action :set_client, only: [:show, :edit, :update, :destroy, :custom_mail_queue, :unmatch_from]
 
   def custom_mail_queue
     @mail_queue = MailQueue.new
+  end
+
+  def unmatch_from
+    @mail_image = MailImage.find(params[:mail_image_id])
+    @client.client_keyword_matches.where(mail_image_id: @mail_image.id).destroy_all
+    @mail_queue = @mail_image.mail_queue
+
+    respond_to do |format|
+      format.html{ redirect_to mail_queue_path(@mail_queue) }
+    end
   end
 
   # GET /clients

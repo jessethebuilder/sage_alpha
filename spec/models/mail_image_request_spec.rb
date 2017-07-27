@@ -9,8 +9,16 @@ RSpec.describe MailImageRequest, type: :model do
     it{ should validate_presence_of :client }
     it{ should validate_presence_of :mail_image }
 
-    it 'should not validate if type == "forward" and tracking_id == nil' do
+    it 'should not validate if of type "forward" and shipping_company is nil' do
       mir.type = 'forward'
+      mir.shipping_company = nil
+      mir.valid?.should == false
+      mir.errors[:shipping_company].include?('cannot be blank if type is "Forward"').should == true
+    end
+
+    it 'should not validate if complete AND type == "forward" AND tracking_id == nil' do
+      mir.type = 'forward'
+      mir.complete = true
       mir.valid?.should == false
       mir.errors[:tracking_id].include?('cannot be blank if type is "Forward"').should == true
     end
@@ -46,7 +54,7 @@ RSpec.describe MailImageRequest, type: :model do
     describe 'compelete' do
       specify ':complete should only return complete MIRs' do
         mir.save!
-        complete_mir = create(:mail_image_request, complete: true)
+        complete_mir = create(:completed_mail_image_request)
         MailImageRequest.complete.count.should == 1
         MailImageRequest.complete.first.should == complete_mir
       end

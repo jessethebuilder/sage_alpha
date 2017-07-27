@@ -1,1 +1,9 @@
-// $('#mail_queue_table').replaceWith('<%= j render partial: "mail_queues/table" %>');
+// This is a bit of a hack here. Because this front-end logic is all in MailQuerer.js.
+// Possibly should refactor to handle most server-side.
+
+var loc = window.location.href;
+window.location = loc;
+// window.location = window.location.href;
+// # <%= render partial: 'mail_queues/update_client_row', locals: {client: @client} %>
+// # <%= render partial: 'mail_queues/update_unmatched', locals: {mail_queue: @mail_queue} %>
+// # normalizeMailImageHeights();

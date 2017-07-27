@@ -1,0 +1,16 @@
+// Either adds or edits a client row.
+
+var new_row = $('<%= j render partial: "mail_queues/client_row", locals: {client: @client} %>');
+var row = $('.row.client[data-client-id="<%= j @client.to_param %>"]');
+
+if(row.length == 0){
+  var last_row = $('.row.client:last-child');
+  if(last_row.length == 0){
+    var header = $('#mail_queue_table .header_row');
+    $(new_row).insertAfter(header);
+  } else {
+    $(new_row).insertAfter(last_row);
+  }
+} else {
+  $(row).replaceWith(new_row);
+}

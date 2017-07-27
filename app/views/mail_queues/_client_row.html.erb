@@ -1,0 +1,59 @@
+<%= content_tag :div, class: 'row client', data: {client_id: client.to_param} do %>
+  <div class="col-xs-4">
+    <ul class="bulletless">
+      <li><%= link_to client.name, client %></li>
+      <li><%= mail_to client.email %></li>
+      <% unless client.phone.blank? %>
+      <li><%= link_to client.phone, "tel:#{client.phone}" %></li>
+      <% end %>
+      <% unless client.company_name.blank? %>
+      <li>Company: <strong><%= client.company_name %></strong></li>
+      <% end %>
+      <li>Keywords:
+        <strong>
+          <%= client.keywords.join(', ') %>
+        </strong>
+      </li>
+    </ul>
+  </div><!-- outer col -->
+
+  <div class="col-xs-8">
+    <% @mail_queue.mail_images_for(client).in_groups_of(4) do |mi_group| %>
+      <div class="row mail_images">
+        <% mi_group.each do |mi| %>
+          <div class="col-sm-3 col">
+            <% if mi %>
+              <!-- <div class="mail_image"> -->
+              <%= content_tag :div, class: 'mail_image', data: {'mail-image-id' => mi.to_param,
+                                                                  'image-url' => mi.image,
+                                                                  'client-ids' => mi.clients.map{ |c| c.to_param }.join(',')} do %>
+                <div class="image_link">
+                  <%= link_to '#', class: 'image_popover_control click_control',
+                              data: {'mail-image-id' => mi.to_param, 'image-url' => mi.image} do %>
+                      <%= image_tag mi.thumb %>
+                  <% end %>
+                </div>
+                <div class="text_link">
+                  <%= link_to 'text', '#',
+                              class: 'text_popover_control click_control',
+                              data: {'mail-image-id' => mi.to_param, 'text' => mi.text}  %>
+
+                </div>
+
+                <div class="text_link" style="margin-bottom:10px;">
+                  <%= link_to 'match to client', '#', class: 'select_client_link' %>
+                </div>
+
+                <div class="text_link" style="margin-bottom:10px;">
+                  <%= link_to 'unmatch', unmatch_from_client_path(client, mail_image_id: mi),
+                              remote: false, method: :post, class: 'text-danger' %>
+                </div>
+              <!-- </div> -->
+              <% end # mail_image %>
+            <% end # if mail_image %>
+          </div><!-- inner col -->
+        <% end # mail_image %>
+      </div><!-- inner row -->
+    <% end # mail_image Groups %>
+  </div>
+<% end %>

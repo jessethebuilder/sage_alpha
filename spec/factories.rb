@@ -23,11 +23,15 @@ FactoryGirl.define do
     type { MailImageRequest::TYPES.sample }
 
     after(:build) do |mi, ev|
-      mi.tracking_id = random_password if mi.type == 'forward'
+      mi.shipping_company = Faker::Lorem.word if mi.type == 'forward'
     end
 
     factory :completed_mail_image_request do
       complete true
+
+      after(:build) do |mi, ev|
+        mi.tracking_id = random_password if mi.type == 'forward'
+      end
     end
   end
 

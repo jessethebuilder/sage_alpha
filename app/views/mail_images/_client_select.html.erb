@@ -3,6 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-bottom:10px;"><span aria-hidden="true">&times;</span></button>
+        <div class="image_for_client_select"></div>
         <h1 class="modal-title" style="margin-top:20px;">Select a Client</h1>
       </div>
       <div class="modal-body">
@@ -39,9 +40,5 @@
   $(document).ready(function(){
     var st = new SortableTable('#client_table');
     st.init();
-
-    $('#client_select').on('hide.bs.modal', function(){
-      $('.image_for_client_select').detach();
-    });
   });
 </script>

@@ -24,6 +24,11 @@ class MailQueue
     client.mail_images.map{ |mi| mi if mi.mail_queue == self }.delete_if{ |mi| mi.nil? }
   end
 
+  def unmatched_mail_images
+    # Select any image that does not have an associated ClientKeywordMatch
+    self.mail_images.select{ |mi| ClientKeywordMatch.where(mail_image_id: mi.to_param).empty? }
+  end
+
   def clients
     self.mail_images.map{ |mi| mi.clients }.flatten.uniq
   end
@@ -44,6 +49,8 @@ class MailQueue
     self.update_attribute(:complete, true)
     count
   end
+
+
 
   # def email_images_for_client(client)
   #   client.mail_images.select{ |mi| mi.mail_queue == self }.uniq.map{ |mi| mi.image }

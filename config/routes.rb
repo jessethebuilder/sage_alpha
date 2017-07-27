@@ -21,12 +21,13 @@ Rails.application.routes.draw do
   resources :clients do
     member do
       get 'custom_mail_queue'
+      post 'unmatch_from'
     end
   end
 
   # devise_for :users has to be above resources :users
   devise_for :users
-  
+
   resources :users, only: [:index, :destroy, :create] do
     member do
       get 'promote'

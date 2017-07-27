@@ -8,7 +8,7 @@ function MailQueuer(){
   this.client_table = this.modal.find('#client_table');
   this.client_rows = this.client_table.find('.client');
 
-  this.box = $('#mail_image_selection');
+  this.box = $('#unmatched_images');
   this.select_client_links = $('.select_client_link');
   this.create_match_links = $('.create_match_link');
 
@@ -58,9 +58,12 @@ function MailQueuer(){
           keyword: '**admin_action**'
         }
       },
+      dataType: 'script',
+      format: 'script',
       complete: function(results){
-        var client_id = JSON.parse(results.responseText).client_id
-        t.hideClientSearch(client_id);
+        t.modal.modal('hide');
+        // var client_id = JSON.parse(results.responseText).client_id
+        // t.hideClientSearch(client_id);
       }
     });
   }
@@ -70,15 +73,13 @@ function MailQueuer(){
     t.modal.modal('hide');
     t.deactivateClient();
     t.deactivateMailImage();
-
-    // jfx I would like to show changes above
   }
 
   this.showClientSearch = function(){
     var t = this;
     var header = this.modal_header;
-    var banner = $('<img src="' + this.active_mail_image.image_url + '" width="100%" class="image_for_client_select"/>');
-    banner.insertAfter(header.find('.close'));
+    var banner = $('<img src="' + this.active_mail_image.image_url + '" width="100%" />');
+    $('.image_for_client_select').html(banner);
 
     this.client_rows.each(function(i, row){
       $(row).show();

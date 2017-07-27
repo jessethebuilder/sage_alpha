@@ -19,7 +19,7 @@
 //= require farm_shed/all.js
 //= require mail_queue_builder
 //= require mail_queuer
-//= require mail_image_request_completer 
+//= require mail_image_request_completer
 //= require mail_queue_popovers
 
 function initClientForm(){
@@ -34,3 +34,11 @@ $(document).on('turbolinks:load', function(){
   // Main doc ready
   initClientForm();
 });
+
+
+function normalizeMailImageHeights(){
+  $('.mail_images').each(function(i, row){
+    var h = $(row).height() + 10;
+    $(row).find('.mail_image').css('height', h + 'px');
+  });
+}

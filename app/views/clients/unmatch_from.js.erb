@@ -1,0 +1,6 @@
+var mi = $('.mail_image[data-mail-image-id="<%= j @mail_image.to_param %>"]');
+mi.hide(200, function(){
+  $(this).detach();
+});
+
+<%= render partial: 'mail_queues/update_unmatched', locals: {mail_queue: @mail_queue} %>
