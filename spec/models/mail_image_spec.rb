@@ -18,9 +18,9 @@ describe MailImage, type: :model do
     let!(:c){ create :client, keywords: %w|hello goodbye| }
 
     describe '#match_to_clients' do
-      it "should create a ClientKeywordMatch for every keyword that matches text" do
+      it "should only craete 1 match, even if more values match" do
         mi.update_attribute(:text, "hello,fa dfi djiff;;a;s fao   goodbye")
-        expect{ mi.match_to_clients }.to change{ ClientKeywordMatch.count }.by(2)
+        expect{ mi.match_to_clients }.to change{ ClientKeywordMatch.count }.by(1)
       end
     end
 
