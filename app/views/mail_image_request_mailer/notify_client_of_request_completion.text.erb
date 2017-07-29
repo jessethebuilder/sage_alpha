@@ -1,0 +1,20 @@
+Hello <%= @client.name %>,
+
+This is to notify you that your <%= @mail_image_request.type.titlecase %> request has been completed.
+
+Your request was completed on <%= @mail_image_request.completed_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) %>.
+
+<% if @mail_image_request.type == 'forward' %>
+  Your request has been shipped via <%= @mail_image_request.shipping_company %>.
+  Your Tracking Id is: <%= @mail_image_request.tracking_id %>.
+<% end %>
+
+If you have any questions, please send an email to the address below.
+
+Sincerely,
+
+Sage Workspace
+
+info@sageworkspace.nyc
+276 5th avenue, New York, NY, 10001 Suite 704
+W: 212-683-9100
