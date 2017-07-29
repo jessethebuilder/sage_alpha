@@ -15,6 +15,6 @@ class ImageMailer < ApplicationMailer
         attachments["mail_image_#{i}.#{ext}"] = open(img).read
       end
 
-    mail(to: "#{@client.name} <#{@client.email}>", subject: "Mail Notification", :delivery_method_options => delivery_options)
+    mail(to: "#{@client.name} <#{@client.email}>", subject: "Mail Notification (Do not Reply)", :delivery_method_options => delivery_options)
   end
 end

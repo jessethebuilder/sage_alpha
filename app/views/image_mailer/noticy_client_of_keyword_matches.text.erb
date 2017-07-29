@@ -1,10 +1,14 @@
-Hello <%= @client.name %>
+Hello <%= @client.name %>,
 
-Please be advised that you have received mail today. See attached files.
+Please be advised that you have received mail (See attached images)
 
 Mail pickup hours are 9AM-7PM Monday-Friday
 
-Please include any special instructions for forwarding (FedEx, UPS, Tracking, etc). Mail will be sent USPS First Class by default.
+To request forwarding, disposal, or scanning of your mail, please click the link below.
+
+<%= client_url(@client) %>
+
+If you have any questions, please send an email to the address below.
 
 Sincerely,
 
@@ -13,4 +17,3 @@ Sage Workspace
 info@sageworkspace.nyc
 276 5th avenue, New York, NY, 10001 Suite 704
 W: 212-683-9100
-F: 212-683-9101

@@ -21,6 +21,7 @@
 //= require mail_queuer
 //= require mail_image_request_completer
 //= require mail_queue_popovers
+//= require mail_image_requests
 
 function initClientForm(){
   // BootstrapRailsForm is a custom function defined in farm_shed

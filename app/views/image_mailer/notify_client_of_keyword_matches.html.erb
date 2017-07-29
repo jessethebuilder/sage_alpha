@@ -1,10 +1,18 @@
-Hello <%= @client.name %><br><br>
+Hello <%= @client.name %>,<br><br>
 
-Please be advised that you have received mail today. See attached files.<br><br>
+Please be advised that you have received mail (See attached images)<br><br>
+
+<!-- [Package Received, omit initial line]: Please be advised that you have received mail, including a package.  (See attached images)
+The storage fee for packages is $5 per day. Package storage fees are charged starting on the day of
+delivery, unless your package(s) are collected within pickup hours today. -->
 
 Mail pickup hours are 9AM-7PM Monday-Friday<br><br>
 
-Please include any special instructions for forwarding (FedEx, UPS, Tracking, etc). Mail will be sent USPS First Class by default.<br><br>
+To request forwarding, disposal, or scanning of your mail, please click the link below.<br><br>
+
+<%= link_to client_url(@client), client_url(@client) %><br><br>
+
+If you have any questions, please send an email to the address below.<br><br>
 
 Sincerely,<br><br>
 
@@ -12,5 +20,4 @@ Sage Workspace<br><br>
 
 info@sageworkspace.nyc<br>
 276 5th avenue, New York, NY, 10001 Suite 704<br>
-W: 212-683-9100<br>
-F: 212-683-9101
+W: 212-683-9100
