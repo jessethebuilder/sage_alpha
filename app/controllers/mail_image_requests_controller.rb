@@ -48,8 +48,7 @@ class MailImageRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @mail_image_request.update(mail_image_request_params)
-        puts mail_image_request_params.inspect
-        puts '....................'
+
         # format.html { redirect_to @mail_image_request, notice: 'Mail image request was successfully updated.' }
         format.json { render :show, status: :ok, location: @mail_image_request }
       else

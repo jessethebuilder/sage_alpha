@@ -1,3 +1,5 @@
+
+
 class MailImageRequest
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -30,6 +32,7 @@ class MailImageRequest
   def set_completed_at
     if complete_changed?
       if self.complete?
+        MailImageRequestMailer.notify_client_of_request_completion(self).deliver_now
         self.completed_at = Time.now
       else
         self.completed_at = nil
