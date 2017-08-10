@@ -7,7 +7,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.smtp_settings = {
-      :address => ENV['MAILER_SMTP_ADDRESS'],
+      :address => ENV['SMTP_ADDRESS'],
       :port => ENV['MAILER_PORT'],
       :domain => ENV['MAILER_DOMAIN'],
       :authentication => 'plain',
