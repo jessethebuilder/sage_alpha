@@ -26,8 +26,6 @@ class Client
   # always creates a User for this client when Client is created
   belongs_to :user, optional: true, dependent: :destroy
 
-  # has_and_belongs_to_many :mail_images
-
   has_many :mail_queues
 
   def send_email(images)
