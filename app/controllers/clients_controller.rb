@@ -57,7 +57,7 @@ class ClientsController < ApplicationController
         u.password = pw
         u.save
 
-        ClientMailer.after_sign_up(@client, pw).deliver_now
+        # ClientMailer.after_sign_up(@client, pw).deliver_now
         format.html { redirect_to clients_path, notice: "Client: #{@client.email} was sucessfully created." }
         # format.json { render :show, status: :created, location: @client }
       else
