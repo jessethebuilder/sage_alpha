@@ -53,9 +53,9 @@ class ClientsController < ApplicationController
         # When Client is saved, a User is saved. Overwrite password here, so
         # the correct one goes out in the confirmation email.
         pw = random_password
-        # u = @client.user
-        # u.password = pw
-        # u.save
+        u = @client.user
+        u.password = pw
+        u.save
 
         ClientMailer.after_sign_up(@client, pw).deliver_now
         format.html { redirect_to clients_path, notice: "Client: #{@client.email} was sucessfully created." }
