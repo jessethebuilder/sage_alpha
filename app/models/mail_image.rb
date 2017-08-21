@@ -19,7 +19,7 @@ class MailImage
 
   has_many :client_keyword_matches, dependent: :destroy
 
-  has_many :mail_image_requests
+  has_many :mail_image_requests, dependent: :destroy
 
   def clients
     self.client_keyword_matches.map{ |ckm| ckm.client }.uniq
