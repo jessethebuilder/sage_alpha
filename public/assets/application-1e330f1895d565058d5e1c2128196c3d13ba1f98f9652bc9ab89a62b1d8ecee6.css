@@ -8949,6 +8949,22 @@ button.close {
   font-size: 40px;
 }
 
+/* line 3, /var/www/sage/alpha/app/assets/stylesheets/_parts.scss */
+#top_nav {
+  background-color: white;
+  height: 55px;
+}
+/* line 10, /var/www/sage/alpha/app/assets/stylesheets/_parts.scss */
+#top_nav .navbar-nav li a {
+  color: black;
+}
+/* line 14, /var/www/sage/alpha/app/assets/stylesheets/_parts.scss */
+#top_nav .navbar-nav li a {
+  font-weight: 600;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 /* line 45, /var/www/sage/alpha/app/assets/stylesheets/mail_queues.scss */
 #mail_queue_table .client {
   padding-top: 10px;
