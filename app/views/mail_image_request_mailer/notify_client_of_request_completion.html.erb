@@ -1,20 +1,41 @@
-Hello <%= @client.name %>,<br><br>
+<p>
+  Hello <%= @client.name %>,
+</p>
 
-This is to notify you that your <%= @mail_image_request.type.titlecase %> request has been completed.<br><br>
+<p>
+  This is to notify you that your <%= @mail_image_request.type.titlecase %> request has been completed.
+</p>
 
-Your request was completed on <%= @mail_image_request.completed_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) %>.<br><br>
+<p>
+  Your request was completed on <%= @mail_image_request.completed_at.strftime(ENV['DATETIME_DISPLAY_FORMATTER']) %>.
+</p>
 
 <% if @mail_image_request.type == 'forward' %>
-  Your request has been shipped via <%= @mail_image_request.shipping_company %>.<br>
-  Your Tracking Id is: <%= @mail_image_request.tracking_id %>.<br><br>
+  <p>
+    Your request has been shipped via <%= @mail_image_request.shipping_company %>.
+    Your Tracking Id is: <%= @mail_image_request.tracking_id %>.
+  </p>
 <% end %>
 
-If you have any questions, please send an email to the address below.<br><br>
+<% if @mail_image_request.type == 'forward' || @mail_image_request.type == 'disposal' %>
+  To keep track of your forwarded mail, please login on our site.
+  <%= link_to new_user_session_url, new_user_session_url %>.
+<% end %>
 
-Sincerely,<br><br>
+<p>
+  If you have any questions, please send an email to the address below.
+</p>
 
-Sage Workspace<br><br>
+<p>
+  Sincerely,
+</p>
 
-info@sageworkspace.nyc<br>
-276 5th avenue, New York, NY, 10001 Suite 704<br>
-W: 212-683-9100
+<p>
+  Sage Workspace
+</p>
+
+<p>
+  info@sageworkspace.nyc<br>
+  276 5th avenue, New York, NY, 10001 Suite 704<br>
+  W: 212-683-9100<br>
+</p>

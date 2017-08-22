@@ -1,0 +1,21 @@
+
+
+#top_nav{
+  background-color: $background_color_1;
+  height: 55px;
+
+  .navbar-nav{
+    li{
+
+      a{
+        color: $text_color_1;
+      }
+
+      a{
+        font-weight: 600;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  }
+}

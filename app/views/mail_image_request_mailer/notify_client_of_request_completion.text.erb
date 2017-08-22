@@ -9,6 +9,11 @@ Your request was completed on <%= @mail_image_request.completed_at.strftime(ENV[
   Your Tracking Id is: <%= @mail_image_request.tracking_id %>.
 <% end %>
 
+<% if @mail_image_request.type == 'forward' || @mail_image_request.type == 'disposal' %>
+  To keep track of your forwarded mail, please login on our site.
+  <%= new_user_session_url %>.
+<% end %>
+
 If you have any questions, please send an email to the address below.
 
 Sincerely,

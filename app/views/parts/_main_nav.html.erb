@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse" id="top_nav">
+<nav class="navbar navbar-default" id="top_nav">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -10,7 +10,10 @@
       </button>
 
       <%= link_to root_path, class: 'navbar-brand', style: 'padding:5px;' do %>
-        <%= image_tag 'logo.png', height: '40px' %>
+        <span>
+          <%= image_tag 'logo/atx-ocr.png', height: '36px' %>
+          <%= image_tag 'logo/sage_workspace.png', height: '48px' %>
+        </span>
       <% end %>
   </div>
 
