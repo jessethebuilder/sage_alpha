@@ -2,8 +2,6 @@
   .mail_image_request{
     padding-top: 10px;
     @extend .date_stampped;
-    // min-height: 40px;
-
   }
 
   .mail_image_request:nth-child(even){

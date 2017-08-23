@@ -14,6 +14,7 @@
               <th>Client Phone</th>
               <th>Type</th>
               <th>Tracking Number</th>
+              <th>Service</th>
               <th>Complete</th>
               <th>Completed at</th>
             </tr>
@@ -53,6 +54,10 @@
                     <%= text_field_tag 'tracking_id', mir.tracking_id, class: 'form-control' %>
                   <% end %>
                 </td>
+                <td>
+                  <% if mir.type == 'forward' %>
+                    <%= mir.shipping_company %> 
+                  <% end %>
                 <td>
                   <!-- <div class="checkbox"> -->
                     <label style="padding-left: 20px;">
