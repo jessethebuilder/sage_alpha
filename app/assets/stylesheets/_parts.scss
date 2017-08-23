@@ -9,12 +9,13 @@
 
       a{
         color: $text_color_1;
-      }
-
-      a{
         font-weight: 600;
         padding-left: 10px;
         padding-right: 10px;
+      }
+
+      a:hover{
+        color: $text_color_2;
       }
     }
   }
