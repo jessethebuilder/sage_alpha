@@ -42,5 +42,4 @@ function MailImageRequestUpdater(mail_image_request){
       t.update($(this));
     });
   }
-
 }
